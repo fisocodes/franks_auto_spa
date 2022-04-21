@@ -1,0 +1,41 @@
+{
+  "name": "franks_auto_spa",
+  "version": "1.0.0",
+  "description": "Frank's Auto Spa Control System",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fisocodes/franks_auto_spa.git"
+  },
+  "keywords": [
+    "franks",
+    "auto",
+    "spa",
+    "control",
+    "system"
+  ],
+  "author": "Oscar Figueroa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fisocodes/franks_auto_spa/issues"
+  },
+  "homepage": "https://github.com/fisocodes/franks_auto_spa#readme",
+  "dependencies": {
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@fontsource/roboto": "^4.5.5",
+    "@mui/icons-material": "^5.6.1",
+    "@mui/material": "^5.6.1",
+    "mui": "file:../../../../material",
+    "next": "^12.1.4",
+    "react": "^18.0.0",
+    "react-countup": "^6.2.0",
+    "react-dom": "^18.0.0"
+  }
+}
