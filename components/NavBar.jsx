@@ -33,9 +33,11 @@ export default function NavBar()
         const href = e.currentTarget.getAttribute("href");
         setIsDrawer(false);
 
-        setTimeout(() => {
-            router.push(href)
-        }, 200);
+        if(href !== router.pathname){
+            setTimeout(() => {
+                router.push(href)
+            }, 200);
+        }
     }
 
     return(
