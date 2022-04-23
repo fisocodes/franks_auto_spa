@@ -44,5 +44,6 @@ export default NextAuth({
             session.user = token.user;
             return session;
         },
-    }
+    },
+    secret: "frankssecret"
 })
