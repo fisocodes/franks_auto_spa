@@ -1,4 +1,6 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { SessionProvider } from 'next-auth/react';
+
 import '@fontsource/roboto/400.css';
 
 import '../styles/main_style.css'
@@ -28,5 +30,10 @@ const theme = createTheme({
 })
 
 export default ({ Component, pageProps }) => {
-    return <ThemeProvider theme={theme}><Component {...pageProps} /></ThemeProvider>
+    return(
+      <SessionProvider>
+        <ThemeProvider theme={theme}><Component {...pageProps} /></ThemeProvider>
+      </SessionProvider>
+    )
+      
 }

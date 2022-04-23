@@ -1,3 +1,5 @@
+import { getSession } from "next-auth/react";
+
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
@@ -9,10 +11,10 @@ import CountUp from 'react-countup';
 import LandingHeader from "../components/LandingHeader"
 import NavBar from "../components/NavBar"
 
-export default () => {
+export default ({user}) => {
     return (
         <>
-            <NavBar/>
+            <NavBar user={user}/>
             <LandingHeader/>
             <Grid container spacing={1}>
                 <Grid item xs={6}>
@@ -131,4 +133,22 @@ export default () => {
             </Card>
         </>
     )
+}
+
+export async function getServerSideProps(ctx){
+    const session = await getSession(ctx);
+
+    if(session)
+        return {
+            redirect: {
+                destination: "/",
+                permanent: false
+            }
+        }
+
+    return {
+        props: {
+            user: session ? session.user : null
+        }
+    }
 }

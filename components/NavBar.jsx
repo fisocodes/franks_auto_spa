@@ -20,11 +20,11 @@ import Avatar from '@mui/material/Avatar';
 
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { signOut } from "next-auth/react";
+import { signIn } from "next-auth/react"
 
-export default function NavBar()
+export default function NavBar({user})
 {
-
-    const [user, setUser] =  useState({name: "Oscar", email: "fisocodes@gmail.com"});
     const [isDrawer, setIsDrawer] = useState(false);
     const router = useRouter();
 
@@ -56,9 +56,9 @@ export default function NavBar()
                         <Grid item xs={4} align="right">
                             {
                                 user ? 
-                                <Avatar>{user.name[0].toUpperCase()}</Avatar>
+                                <Avatar>{user.name[0].toUpperCase() + user.surname[0].toUpperCase()}</Avatar>
                                 :
-                                <Button color="inherit">Log In</Button>
+                                <Button color="inherit" onClick={() => signIn()}>Log In</Button>
                             }
                         </Grid>
                     </Grid>
@@ -66,13 +66,20 @@ export default function NavBar()
             </AppBar>
             <Drawer anchor="left" open={isDrawer} onClose={() => setIsDrawer(false)}>
                 <Stack alignItems="center" mt={3}>
-                    <Avatar sx={{width: 75, height: 75}}>{user ? user.name[0].toUpperCase() : null}</Avatar>
+                    <Avatar sx={{width: 75, height: 75}}>{user ? user.name[0].toUpperCase() + user.surname[0].toUpperCase() : null}</Avatar>
                     <List>
                         <ListItem>
-                           <ListItemText>{user ? user.name.toUpperCase() : null}</ListItemText> 
+                            <Grid container>
+                                <Grid item xs={6}>
+                                    <ListItemText>{user ? user.name : null}</ListItemText> 
+                                </Grid>
+                                <Grid item xs={6}> 
+                                    <ListItemText>{user ? user.surname : null}</ListItemText> 
+                                </Grid>
+                            </Grid>
                         </ListItem>
                         <ListItem>
-                            <ListItemButton sx={{p: 0}}>
+                            <ListItemButton sx={{p: 0}} onClick={() => signOut()}>
                                 <ListItemIcon>
                                     <LogoutIcon/>
                                 </ListItemIcon>
