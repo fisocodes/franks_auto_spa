@@ -1,8 +1,7 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { open } from "sqlite";
 
-const sqlite3 = require('sqlite3').verbose();
+const mysql = require('mysql2/promise');
 const bcrypt = require('bcrypt');
 
 export default NextAuth({
@@ -16,16 +15,14 @@ export default NextAuth({
             },
             async authorize(credentials, req){
 
-                const db = await open({
-                    filename: './db/franks.db',
-                    mode: sqlite3.OPEN_READONLY,
-                    driver: sqlite3.Database
-                });
+                const connection =  await mysql.createConnection(process.env.DATABASE_URL);
 
-                const user = await db.get('SELECT * FROM users WHERE username = ?', credentials.username);
-
-                if(user){
+                const [rows, fields] = await connection.query('SELECT * FROM users WHERE username = ?', [credentials.username]);
+                
+                if(rows){
+                    const user = rows[0];
                     const match = await bcrypt.compare(credentials.password, user.password);
+
                     if(match)
                         return {id: user.id, name: user.name, surname: user.surname}
                 }
