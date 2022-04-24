@@ -1,8 +1,13 @@
 import { getSession } from "next-auth/react";
+import { useEffect } from "react";
 
 import NavBar from "../components/NavBar";
 
 export default ({user}) => {
+
+    useEffect(() => {
+        console.log(user);
+    });
 
     return (
         <>
