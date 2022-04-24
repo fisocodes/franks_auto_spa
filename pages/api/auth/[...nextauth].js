@@ -18,8 +18,8 @@ export default NextAuth({
                 const connection =  await mysql.createConnection({
                     host: process.env.PLANETSCALE_DB_HOST,
                     database: process.env.PLANETSCALE_DB,
-                    user: process.env.PLANETSCALE_DB_USERNAME,
-                    password: process.env.PLANETSCALE_DB_PASSWORD,
+                    user: '2bg2s67icw5d',
+                    password: 'pscale_pw_qvt9AJiMWteTNEB6KheNy76Rx_XuD8CNEHrqDmwc5Fk',
                     ssl: {"rejectUnauthorized":true}
                 });
 
