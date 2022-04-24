@@ -15,7 +15,7 @@ export default NextAuth({
             },
             async authorize(credentials, req){
 
-                const connection =  await mysql.createConnection('mysql://2hng6dhbb0kp:pscale_pw_wAiFDAFw14tgYX24zwcg_BReR_KPB4HL062gxvxNJT8@1e8t81ma1fvm.eu-west-2.psdb.cloud/franksdb?ssl={"rejectUnauthorized":true}');
+                const connection =  await mysql.createConnection(process.env.DATABASE_URL);
 
                 const [rows, fields] = await connection.query('SELECT * FROM users WHERE username = ?', [credentials.username]);
                 
