@@ -15,11 +15,7 @@ export default NextAuth({
             },
             async authorize(credentials, req){
 
-                const connection =  await mysql.createConnection({
-                    host: process.env.PLANETSCALE_DB_HOST,
-                    user: process.env.PLANETSCALE_DB_USERNAME,
-                    database: process.env.PLANETSCALE_DB
-                });
+                const connection =  await mysql.createConnection(process.env.DATABASE_URL);
 
                 const [rows, fields] = await connection.query('SELECT * FROM users WHERE username = ?', [credentials.username]);
                 
