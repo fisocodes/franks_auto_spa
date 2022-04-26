@@ -2,7 +2,6 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { SessionProvider } from 'next-auth/react';
 
 import '@fontsource/roboto/400.css';
-
 import '../styles/main_style.css'
 
 const theme = createTheme({
@@ -29,11 +28,12 @@ const theme = createTheme({
       },
 })
 
-export default ({ Component, pageProps }) => {
+export default function FranksApp({ Component, pageProps }) {
     return(
       <SessionProvider>
-        <ThemeProvider theme={theme}><Component {...pageProps} /></ThemeProvider>
+        <ThemeProvider theme={theme}>
+          <Component {...pageProps} />
+        </ThemeProvider>
       </SessionProvider>
-    )
-      
+    ) 
 }

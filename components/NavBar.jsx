@@ -42,7 +42,7 @@ export default function NavBar({user})
 
     return(
         <>
-            <AppBar position='sticky'>
+            <AppBar position='sticky' elevation={0}>
                 <Toolbar>
                     <Grid container>
                         <Grid item xs={4} align="left">
@@ -64,7 +64,7 @@ export default function NavBar({user})
                     </Grid>
                 </Toolbar>
             </AppBar>
-            <Drawer anchor="left" open={isDrawer} onClose={() => setIsDrawer(false)}>
+            <Drawer anchor="left" open={isDrawer} onClose={() => setIsDrawer(false)} elevation={0}>
                 <Stack alignItems="center" mt={3}>
                     <Avatar sx={{width: 75, height: 75}}>{user ? user.name[0].toUpperCase() + user.surname[0].toUpperCase() : null}</Avatar>
                     <List>

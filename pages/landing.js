@@ -1,5 +1,4 @@
 import { getSession } from "next-auth/react";
-import { useEffect } from "react";
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -13,10 +12,6 @@ import LandingHeader from "../components/LandingHeader"
 import NavBar from "../components/NavBar"
 
 export default ({user}) => {
-
-    useEffect(() => {
-        console.log(user);
-    });
 
     return (
         <>
