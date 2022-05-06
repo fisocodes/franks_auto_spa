@@ -5,5 +5,5 @@ export default async (req, res) => {
     const connection = await mysql.createConnection(process.env.DATABASE_URL);
     const [rows, fields] = await connection.query('SELECT * FROM employees WHERE id = ?', [id]);
 
-    res.json(rows[0]);
+    res.json({employee: rows[0]});
 }
