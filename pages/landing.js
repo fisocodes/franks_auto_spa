@@ -2,7 +2,7 @@ import { getSession } from "next-auth/react";
 
 import LandingHeader from "../components/LandingHeader"
 
-export default ({user}) => {
+export default () => {
     return <LandingHeader/>
 }
 
@@ -16,10 +16,6 @@ export async function getServerSideProps(ctx){
                 permanent: false
             }
         }
-
-    return {
-        props: {
-            user: session ? session.user : null
-        }
-    }
+    
+    return { props: {}}
 }

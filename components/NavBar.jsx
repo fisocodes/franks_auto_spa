@@ -1,121 +1,87 @@
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import Drawer from '@mui/material/Drawer';
-import Divider from '@mui/material/Divider';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import IconButton from '@mui/material/IconButton';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import PersonIcon from '@mui/icons-material/Person';
-import LocalCarWashIcon from '@mui/icons-material/LocalCarWash';
-import LogoutIcon from '@mui/icons-material/Logout';
-import MenuIcon from '@mui/icons-material/Menu';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
-
+import { useEffect } from 'react';
 import { useState } from 'react';
+import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { signOut } from "next-auth/react";
-import { signIn } from "next-auth/react"
+import { signOut } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 
-export default function NavBar({user})
+import { Header } from "@mantine/core";
+import { Group } from "@mantine/core";
+import { Stack } from '@mantine/core';
+import { Burger } from "@mantine/core";
+import { Title } from '@mantine/core';
+import { Drawer } from '@mantine/core';
+import { Divider } from '@mantine/core';
+import { Avatar } from '@mantine/core';
+import { Button } from '@mantine/core';
+
+import { MdDashboard } from 'react-icons/md';
+import { MdLocalCarWash } from 'react-icons/md';
+import { MdPerson } from 'react-icons/md';
+import { MdExitToApp } from 'react-icons/md';
+
+export default function NavBar()
 {
-    const [isDrawer, setIsDrawer] = useState(false);
     const router = useRouter();
+    const [opened, setOpened] = useState(false);
+    const [user, setUser] = useState();
 
-    const handleNav = (e) => {
-        e.preventDefault();
-        const href = e.currentTarget.getAttribute("href");
-        setIsDrawer(false);
+    useEffect(() => {
+        const getUser =  async () => {
+            const session = await getSession();
 
-        if(href !== router.pathname){
-            setTimeout(() => {
-                router.push(href)
-            }, 200);
+            setUser(session ? session.user : undefined);
         }
+
+        getUser();
+    }, []);
+
+    const handleDashboardClick = () => {
+        router.push('/');
+        setOpened(false);
+    }
+
+    const handleWashesClick = () => {
+        router.push('/washes');
+        setOpened(false);
+    }
+
+    const handleEmployeesClick = () => {
+        router.push('/employees');
+        setOpened(false);
     }
 
     return(
         <>
-            <AppBar position='sticky' elevation={0}>
-                <Toolbar>
-                    <Grid container>
-                        <Grid item xs={4} align="left">
-                            {
-                                user && <IconButton color="inherit" onClick={() => setIsDrawer(true)}><MenuIcon/></IconButton> 
-                            }
-                        </Grid>
-                        <Grid item xs={4} align="center">
-                            <Avatar variant="square" src="https://franksautospa.mx/wp-content/uploads/2021/09/logo.png"/>
-                        </Grid>
-                        <Grid item xs={4} align="right">
-                            {
-                                user ? 
-                                <Avatar>{user.name[0].toUpperCase() + user.surname[0].toUpperCase()}</Avatar>
-                                :
-                                <Button color="inherit" onClick={() => signIn()}>Log In</Button>
-                            }
-                        </Grid>
-                    </Grid>
-                </Toolbar>
-            </AppBar>
-            <Drawer anchor="left" open={isDrawer} onClose={() => setIsDrawer(false)} elevation={0}>
-                <Stack alignItems="center" mt={3}>
-                    <Avatar sx={{width: 75, height: 75}}>{user ? user.name[0].toUpperCase() + user.surname[0].toUpperCase() : null}</Avatar>
-                    <List>
-                        <ListItem>
-                            <Grid container>
-                                <Grid item xs={6}>
-                                    <ListItemText>{user ? user.name : null}</ListItemText> 
-                                </Grid>
-                                <Grid item xs={6}> 
-                                    <ListItemText>{user ? user.surname : null}</ListItemText> 
-                                </Grid>
-                            </Grid>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemButton sx={{p: 0}} onClick={() => signOut()}>
-                                <ListItemIcon>
-                                    <LogoutIcon/>
-                                </ListItemIcon>
-                                <ListItemText>Cerrar sesión</ListItemText>
-                            </ListItemButton>
-                        </ListItem>
-                    </List>
-                </Stack>
-                <Divider/>
-                <List>
-                    <ListItem>
-                        <ListItemButton sx={{p: 0}} href="/" onClick={handleNav}>
-                            <ListItemIcon>
-                                <DashboardIcon/>
-                            </ListItemIcon>
-                            <ListItemText>Panel</ListItemText>
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemButton sx={{p: 0}} href="/employees" onClick={handleNav}>
-                            <ListItemIcon>
-                                <PersonIcon/>
-                            </ListItemIcon>
-                            <ListItemText>Secadores</ListItemText>
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemButton sx={{p: 0}} href="/washes" onClick={handleNav}>
-                            <ListItemIcon>
-                                <LocalCarWashIcon/>
-                            </ListItemIcon>
-                            <ListItemText>Lavados</ListItemText>
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-            </Drawer>
+            <Header p="xs" fixed>
+                {
+                    user ?
+                    <Group position="left">
+                        <Burger opened={opened} onClick={() => setOpened(!opened)}/>
+                        <Title order={2}>Frank's Auto Spa</Title>
+                    </Group>
+                    :
+                    <Group position="apart">
+                        <Title order={2}>Frank's Auto Spa</Title>
+                        <Button onClick={() => signIn()}>Iniciar sesión</Button>
+                    </Group>
+                }
+            </Header>
+            {
+                user ?   
+                <Drawer opened={opened} onClose={() => setOpened(false)} size="xs">
+                    <Stack align="center">
+                        <Avatar size="xl">{`${user.name.toUpperCase()[0]} ${user.surname.toUpperCase()[0]}`}</Avatar>
+                        <Title order={4}>{`${user.name} ${user.surname}`}</Title>
+                        <Button leftIcon={<MdExitToApp/>} variant="subtle" fullWidth onClick={() => signOut()} color="red">Cerrar sesión</Button>
+                        <Divider size="xl" variant='solid'/>
+                        <Button leftIcon={<MdDashboard/>} variant="subtle" fullWidth onClick={handleDashboardClick}>Panel</Button>
+                        <Button leftIcon={<MdLocalCarWash/>} variant="subtle" fullWidth onClick={handleWashesClick}>Lavados</Button>
+                        <Button leftIcon={<MdPerson/>} variant="subtle" fullWidth onClick={handleEmployeesClick}>Secadores</Button>
+                    </Stack>
+                </Drawer>
+                :null
+            }
         </>
-    )
+    );
 }

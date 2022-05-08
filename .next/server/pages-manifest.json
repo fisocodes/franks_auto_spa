@@ -2,9 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/employees/[id]": "pages/employees/[id].js",
   "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
-  "/api/employees/[id]": "pages/api/employees/[id].js",
   "/employees": "pages/employees.js",
+  "/": "pages/index.js",
   "/api/employees": "pages/api/employees.js"
 }

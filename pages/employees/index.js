@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 
 import { Stack } from '@mantine/core';
 import { Grid } from '@mantine/core';
-import { Title } from '@mantine/core';
 import { MultiSelect } from '@mantine/core';
 import { Button } from '@mantine/core';
 
@@ -15,7 +14,7 @@ import EmployeeCard from '../../components/EmployeeCard';
 
 const axios =  require('axios').default;
 
-export default ({user, employees}) => {
+export default ({employees}) => {
     const router = useRouter();
 
     const[selectorData, setSelectorData] = useState([]);
@@ -38,7 +37,6 @@ export default ({user, employees}) => {
 
     return(
         <Stack m={10}>
-            <Title>Secadores</Title>
             <Grid>
                 <Grid.Col xs={8}>
                     <MultiSelect searchable data={selectorData} value={selectorValue} onChange={setSelectorValue} label="Filtrar secadores"/>
@@ -72,7 +70,6 @@ export async function getServerSideProps(ctx){
 
     return {
         props: {
-            user: session ? session.user : null,
             employees: employees
         }
     }

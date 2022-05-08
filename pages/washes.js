@@ -1,10 +1,12 @@
 import { getSession } from "next-auth/react";
 
-export default ({user, ongoing}) => {
+export default () => {
     return <h1>WASHES PAGE</h1>
 }
 
 export async function getServerSideProps(ctx){
+    const session = await getSession(ctx);
+    console.log(session);
 
     if(!session)
         return {
@@ -14,10 +16,5 @@ export async function getServerSideProps(ctx){
             }
         }
 
-    return {
-        props: {
-            user: session ? session.user : null,
-            ongoing,
-        }
-    }
+    return { props: {}}
 }
