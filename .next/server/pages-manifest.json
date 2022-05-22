@@ -3,7 +3,10 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
-  "/employees": "pages/employees.js",
+  "/landing": "pages/landing.js",
   "/": "pages/index.js",
-  "/api/employees": "pages/api/employees.js"
+  "/api/employees": "pages/api/employees.js",
+  "/api/services": "pages/api/services.js",
+  "/api/brands": "pages/api/brands.js",
+  "/employees": "pages/employees.js"
 }

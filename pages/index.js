@@ -1,6 +1,9 @@
 import { getSession } from "next-auth/react";
+import { useEffect } from 'react';
 
-export default ({user}) => {
+export default ({setTitle}) => {
+
+    useEffect(() => setTitle('Panel'), []);
 
     return (
         <>

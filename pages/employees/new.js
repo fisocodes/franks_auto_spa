@@ -1,6 +1,7 @@
 import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useEffect } from 'react';
 
 import { Stack } from '@mantine/core';
 import { Grid } from '@mantine/core';
@@ -15,7 +16,7 @@ import { MdCancel } from 'react-icons/md';
 
 const axios =  require('axios').default;
 
-export default function New({user}){
+export default function New({setTitle}){
     const router =  useRouter();
 
     const [firstName, setFirstName] = useState('');
@@ -23,6 +24,8 @@ export default function New({user}){
     const [lastName1, setLastName1] = useState('');
     const [lastName2, setLastName2] = useState('');
     const [state, setState] = useState(true);
+
+    useEffect(() => setTitle('Nuevo secador'), []);
 
     const handleCancel = (e) => {
         e.preventDefault();
@@ -45,7 +48,6 @@ export default function New({user}){
 
     return(
         <Stack m={10}>
-            <Title>Nuevo secador</Title>
             <form onSubmit={handleSubmit}>
                 <Grid grow>
                     <Grid.Col span={6}>

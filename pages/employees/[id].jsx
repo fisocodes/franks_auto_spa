@@ -1,5 +1,6 @@
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useEffect } from 'react';
 
 import { Stack } from '@mantine/core';
 import { Grid } from "@mantine/core";
@@ -12,8 +13,10 @@ import { MdEdit } from 'react-icons/md';
 
 const axios =  require('axios').default;
 
-export default function Employee({employee}){
+export default function Employee({employee, setTitle}){
     const router = useRouter();
+
+    useEffect(() => setTitle('Secador'), []);
 
     const handleEdit = (e) => {
         e.preventDefault();

@@ -1,6 +1,10 @@
 import { getSession } from "next-auth/react";
+import { useEffect } from 'react';
 
-export default () => {
+export default ({setTitle}) => {
+
+    useEffect(() => setTitle('Lavados'), []);
+
     return <h1>WASHES PAGE</h1>
 }
 

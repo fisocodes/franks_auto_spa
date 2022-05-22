@@ -14,16 +14,20 @@ import { Drawer } from '@mantine/core';
 import { Divider } from '@mantine/core';
 import { Avatar } from '@mantine/core';
 import { Button } from '@mantine/core';
+import { Affix } from '@mantine/core'
 
 import { MdDashboard } from 'react-icons/md';
 import { MdLocalCarWash } from 'react-icons/md';
 import { MdPerson } from 'react-icons/md';
 import { MdExitToApp } from 'react-icons/md';
 
-export default function NavBar()
+import NewWashModal from './NewWashModal';
+
+export default function NavBar({title})
 {
     const router = useRouter();
-    const [opened, setOpened] = useState(false);
+    const [drawerOpened, setDrawerOpened] = useState(false);
+    const [newWashOpened, setNewWashOpened] = useState(false);
     const [user, setUser] = useState();
 
     useEffect(() => {
@@ -38,17 +42,21 @@ export default function NavBar()
 
     const handleDashboardClick = () => {
         router.push('/');
-        setOpened(false);
+        setDrawerOpened(false);
     }
 
     const handleWashesClick = () => {
         router.push('/washes');
-        setOpened(false);
+        setDrawerOpened(false);
     }
 
     const handleEmployeesClick = () => {
         router.push('/employees');
-        setOpened(false);
+        setDrawerOpened(false);
+    }
+
+    const handleNewWashClick = () => {
+        console.log('New wash...');
     }
 
     return(
@@ -57,19 +65,19 @@ export default function NavBar()
                 {
                     user ?
                     <Group position="left">
-                        <Burger opened={opened} onClick={() => setOpened(!opened)}/>
-                        <Title order={2}>Frank's Auto Spa</Title>
+                        <Burger opened={drawerOpened} onClick={() => setDrawerOpened(!drawerOpened)}/>
+                        <Title order={2}>{title}</Title>
                     </Group>
                     :
                     <Group position="apart">
-                        <Title order={2}>Frank's Auto Spa</Title>
+                        <Title order={2}>{title}</Title>
                         <Button onClick={() => signIn()}>Iniciar sesión</Button>
                     </Group>
                 }
             </Header>
             {
                 user ?   
-                <Drawer opened={opened} onClose={() => setOpened(false)} size="xs">
+                <Drawer opened={drawerOpened} onClose={() => setDrawerOpened(false)} size="xs">
                     <Stack align="center">
                         <Avatar size="xl">{`${user.name.toUpperCase()[0]} ${user.surname.toUpperCase()[0]}`}</Avatar>
                         <Title order={4}>{`${user.name} ${user.surname}`}</Title>
@@ -80,6 +88,16 @@ export default function NavBar()
                         <Button leftIcon={<MdPerson/>} variant="subtle" fullWidth onClick={handleEmployeesClick}>Secadores</Button>
                     </Stack>
                 </Drawer>
+                :null
+            }
+            {
+                user ?
+                <>
+                    <NewWashModal opened={newWashOpened} setOpened={setNewWashOpened}/>
+                    <Affix position={{bottom: 20, right: 20}}>
+                        <Button leftIcon={<MdLocalCarWash/>} color="yellow" onClick={() => setNewWashOpened(!newWashOpened)} size="lg">Nuevo</Button>
+                    </Affix>
+                </> 
                 :null
             }
         </>

@@ -1,8 +1,12 @@
 import { getSession } from "next-auth/react";
+import { useEffect } from "react";
 
 import LandingHeader from "../components/LandingHeader"
 
-export default () => {
+export default ({setTitle}) => {
+
+    useEffect(() => setTitle("Frank's Auto Spa"), []);
+
     return <LandingHeader/>
 }
 

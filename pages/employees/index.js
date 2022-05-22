@@ -14,16 +14,18 @@ import EmployeeCard from '../../components/EmployeeCard';
 
 const axios =  require('axios').default;
 
-export default ({employees}) => {
+export default ({employees, setTitle}) => {
     const router = useRouter();
 
     const[selectorData, setSelectorData] = useState([]);
     const[selectorValue, setSelectorValue] = useState([]);
 
+    useEffect(() => setTitle('Secadores'), []);
+
 
     const handleNew = (e) => {
         e.preventDefault();
-        router.push("/employees/new");;
+        router.push("/employees/new");
     }
 
     useEffect(() => {
