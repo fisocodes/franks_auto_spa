@@ -3,10 +3,8 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
-  "/landing": "pages/landing.js",
-  "/": "pages/index.js",
+  "/api/ongoing": "pages/api/ongoing.js",
+  "/washes": "pages/washes.js",
   "/api/employees": "pages/api/employees.js",
-  "/api/services": "pages/api/services.js",
-  "/api/brands": "pages/api/brands.js",
-  "/employees": "pages/employees.js"
+  "/api/services": "pages/api/services.js"
 }

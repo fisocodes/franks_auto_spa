@@ -1,16 +1,24 @@
 import { getSession } from "next-auth/react";
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-export default ({setTitle}) => {
+const axios =  require('axios').default;
 
-    useEffect(() => setTitle('Lavados'), []);
+export default ({setTitle, washes}) => {
 
-    return <h1>WASHES PAGE</h1>
+    useEffect(() => {
+        setTitle('Lavados');
+        console.log(washes);
+    }, []);
+
+    return <h1>Washes page</h1>
 }
 
 export async function getServerSideProps(ctx){
     const session = await getSession(ctx);
-    console.log(session);
+    
+    const washesResponse =  await axios.get(`${process.env.BASE_URL}/api/ongoing`);
+    const employeesresponse =  await axios.get(`${process.env.BASE_URL}/api/employees`);
+    
 
     if(!session)
         return {
@@ -20,5 +28,5 @@ export async function getServerSideProps(ctx){
             }
         }
 
-    return { props: {}}
+    return { props: {washes: washesResponse.data.washes}}
 }
