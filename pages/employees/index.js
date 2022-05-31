@@ -39,7 +39,7 @@ export default ({employees, setTitle}) => {
 
     return(
         <Stack m={10}>
-            <Grid>
+            <Grid align="center" justify="center">
                 <Grid.Col xs={8}>
                     <MultiSelect searchable data={selectorData} value={selectorValue} onChange={setSelectorValue} label="Filtrar secadores"/>
                 </Grid.Col>

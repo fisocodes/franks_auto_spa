@@ -1,6 +1,12 @@
+import { Title } from "@mantine/core";
+import { Center } from "@mantine/core";
+import { Stack } from "@mantine/core";
+import { ActionIcon } from "@mantine/core";
 import { getSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useState } from "react";
+
+import { MdSentimentVeryDissatisfied } from 'react-icons/md'
 
 import OngoingWash from "../components/OngoingWash";
 
@@ -24,7 +30,15 @@ export default ({setTitle, ongoing, employees}) => {
 
     return(
         <>
-            {ongoingArray}
+            {
+                ongoing.length > 0 ? ongoingArray :
+                <Center>
+                    <Stack align="center">
+                        <Title>{":("}</Title>
+                        <Title order={3}>{"No hay lavados"}</Title>
+                    </Stack>
+                </Center>
+            }
         </>
     );
 }
