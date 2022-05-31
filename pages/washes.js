@@ -1,22 +1,37 @@
 import { getSession } from "next-auth/react";
 import { useEffect } from "react";
+import { useState } from "react";
+
+import OngoingWash from "../components/OngoingWash";
 
 const axios =  require('axios').default;
 
-export default ({setTitle, washes}) => {
+export default ({setTitle, ongoing, employees}) => {
+    const [ongoingArray, setOngoingArray] = useState([]);
 
     useEffect(() => {
         setTitle('Lavados');
-        console.log(washes);
+
+        setOngoingArray(ongoing.map(wash => {
+            return <OngoingWash date={wash.date} employee={employees.find(employee => employee.id === wash.employee_id)} removeWash={removeWash}/>
+        }))
     }, []);
 
-    return <h1>Washes page</h1>
+    const removeWash = (date) => {
+        setOngoingArray(ongoingArray.filter(wash => date !== wash.date))
+    }
+
+    return(
+        <>
+            {ongoingArray}
+        </>
+    );
 }
 
 export async function getServerSideProps(ctx){
     const session = await getSession(ctx);
     
-    const washesResponse =  await axios.get(`${process.env.BASE_URL}/api/ongoing`);
+    const ongoingResponse =  await axios.get(`${process.env.BASE_URL}/api/ongoing`);
     const employeesresponse =  await axios.get(`${process.env.BASE_URL}/api/employees`);
     
 
@@ -28,5 +43,8 @@ export async function getServerSideProps(ctx){
             }
         }
 
-    return { props: {washes: washesResponse.data.washes}}
+    return { props: {
+        ongoing: ongoingResponse.data.ongoing,
+        employees: employeesresponse.data.employees
+    }}
 }
