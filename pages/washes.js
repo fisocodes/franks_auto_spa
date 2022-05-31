@@ -18,7 +18,8 @@ export default ({setTitle, ongoing, employees}) => {
     }, []);
 
     const removeWash = (date) => {
-        setOngoingArray(ongoing.filter(wash => date !== wash.date).map(wash =>  <OngoingWash key={wash.date} date={wash.date} employee={employees.find(employee => employee.id === wash.employee_id)} service={wash.service} removeWash={removeWash}/>));
+        ongoing = ongoing.filter(wash => date !== wash.date)
+        setOngoingArray(ongoing.map(wash => <OngoingWash key={wash.date} date={wash.date} employee={employees.find(employee => employee.id === wash.employee_id)} service={wash.service} removeWash={removeWash}/>));
     }
 
     return(
