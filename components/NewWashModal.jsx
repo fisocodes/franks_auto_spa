@@ -88,6 +88,7 @@ export default function NewWashModal({opened, setOpened})
                 colour: colour
             }
         });
+        setOpened(!opened);
         console.log(response.data);
     }
 

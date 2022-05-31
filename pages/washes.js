@@ -13,12 +13,12 @@ export default ({setTitle, ongoing, employees}) => {
         setTitle('Lavados');
 
         setOngoingArray(ongoing.map(wash => {
-            return <OngoingWash date={wash.date} employee={employees.find(employee => employee.id === wash.employee_id)} removeWash={removeWash}/>
+            return <OngoingWash key={wash.date} date={wash.date} employee={employees.find(employee => employee.id === wash.employee_id)} service={wash.service} removeWash={removeWash}/>
         }))
     }, []);
 
     const removeWash = (date) => {
-        setOngoingArray(ongoingArray.filter(wash => date !== wash.date))
+        setOngoingArray(ongoing.filter(wash => date !== wash.date).map(wash =>  <OngoingWash key={wash.date} date={wash.date} employee={employees.find(employee => employee.id === wash.employee_id)} service={wash.service} removeWash={removeWash}/>));
     }
 
     return(
