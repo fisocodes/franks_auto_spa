@@ -1,14 +1,12 @@
 import { Title } from "@mantine/core";
 import { Center } from "@mantine/core";
 import { Stack } from "@mantine/core";
-import { ActionIcon } from "@mantine/core";
 import { getSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useState } from "react";
 
 import OngoingWash from "../components/OngoingWash";
 
-import Pusher from 'pusher-js';
 const axios =  require('axios').default;
 
 export default ({setTitle, ongoing, employees}) => {
@@ -19,18 +17,7 @@ export default ({setTitle, ongoing, employees}) => {
 
         setOngoingArray(ongoing.map(wash => {
             return <OngoingWash key={wash.date} date={wash.date} employee={employees.find(employee => employee.id === wash.employee_id)} service={wash.service} removeWash={removeWash}/>
-        }))
-
-        const pusher = new Pusher(`${process.env.PUSHER_KEY}`, {
-            cluster: `${process.env.PUSHER_CLUSTER}`,
-            useTLS: true
-        });
-    
-        const channel = pusher.subscribe('franks-auto-spa');
-        channel.bind('cancel-wash', data => {
-            console.log(data.date);
-            removeWash(data.date);
-        });
+        }));
 
     }, []);
 
@@ -42,8 +29,11 @@ export default ({setTitle, ongoing, employees}) => {
     return(
         <>
             {
-                ongoingArray.length > 0 ? ongoingArray :
-                <Center>
+                ongoingArray.length > 0 ?
+                <Stack pt="lg" pb={70}>
+                    {ongoingArray}
+                </Stack>:
+                <Center style={{height: "80vh"}}>
                     <Stack align="center">
                         <Title>{":("}</Title>
                         <Title order={3}>{"No hay lavados"}</Title>
