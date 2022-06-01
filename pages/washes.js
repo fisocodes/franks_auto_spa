@@ -6,10 +6,9 @@ import { getSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useState } from "react";
 
-import { MdSentimentVeryDissatisfied } from 'react-icons/md'
-
 import OngoingWash from "../components/OngoingWash";
 
+import Pusher from 'pusher-js';
 const axios =  require('axios').default;
 
 export default ({setTitle, ongoing, employees}) => {
@@ -21,6 +20,18 @@ export default ({setTitle, ongoing, employees}) => {
         setOngoingArray(ongoing.map(wash => {
             return <OngoingWash key={wash.date} date={wash.date} employee={employees.find(employee => employee.id === wash.employee_id)} service={wash.service} removeWash={removeWash}/>
         }))
+
+        const pusher = new Pusher(`${process.env.PUSHER_KEY}`, {
+            cluster: `${process.env.PUSHER_CLUSTER}`,
+            useTLS: true
+        });
+    
+        const channel = pusher.subscribe('franks-auto-spa');
+        channel.bind('cancel-wash', data => {
+            console.log(data.date);
+            removeWash(data.date);
+        });
+
     }, []);
 
     const removeWash = (date) => {
@@ -31,7 +42,7 @@ export default ({setTitle, ongoing, employees}) => {
     return(
         <>
             {
-                ongoing.length > 0 ? ongoingArray :
+                ongoingArray.length > 0 ? ongoingArray :
                 <Center>
                     <Stack align="center">
                         <Title>{":("}</Title>
