@@ -33,8 +33,7 @@ export default function OngoingWash({date, employee, service, removeWash}){
 
         const pusher = new Pusher(`${process.env.PUSHER_KEY}`, {
             cluster: `${process.env.PUSHER_CLUSTER}`,
-            encrypted: true,
-            forceTLS: true
+            useTLS: true
         });
     
         const channel = pusher.subscribe('franks-auto-spa');

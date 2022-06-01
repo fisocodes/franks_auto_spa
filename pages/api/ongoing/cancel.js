@@ -13,7 +13,7 @@ export default async (req, res) => {
         key: `${process.env.PUSHER_KEY}`,
         secret: `${process.env.PUSHER_SECRET}`,
         cluster: `${process.env.PUSHER_CLUSTER}`,
-        encrypted: true
+        useTLS: true
     });
 
     pusher.trigger('franks-auto-spa', 'cancel-wash', req.body);
