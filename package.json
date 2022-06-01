@@ -39,6 +39,8 @@
     "mysql2": "^2.3.3",
     "next": "^12.1.4",
     "next-auth": "^4.3.3",
+    "pusher": "^5.1.0-beta",
+    "pusher-js": "^7.1.0-beta",
     "react": "^18.0.0",
     "react-countup": "^6.2.0",
     "react-dom": "^18.0.0",

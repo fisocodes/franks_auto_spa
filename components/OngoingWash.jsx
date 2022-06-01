@@ -1,5 +1,4 @@
 import { Card } from "@mantine/core";
-import { Group } from "@mantine/core";
 import { Avatar } from "@mantine/core";
 import { Title } from "@mantine/core";
 import { Text } from "@mantine/core";
@@ -10,6 +9,9 @@ import { MdCancel } from 'react-icons/md';
 import { MdCheckCircle } from 'react-icons/md';
 
 import { useStopwatch } from 'react-timer-hook';
+
+import Pusher from 'pusher-js';
+import { useEffect } from "react";
 
 const axios =  require('axios').default;
 
@@ -26,6 +28,23 @@ export default function OngoingWash({date, employee, service, removeWash}){
         removeWash(date);
         console.log(cancelResponse.data);
     }
+
+    useEffect(() => {
+        console.log(process.env.PUSHER_KEY);
+        console.log(process.env.PUSHER_CLUSTER);
+
+        const pusher = new Pusher(`${process.env.PUSHER_KEY}`, {
+            cluster: `${process.env.PUSHER_CLUSTER}`,
+            encrypted: true
+        });
+    
+        const channel = pusher.subscribe('franks-auto-spa');
+        channel.bind('cancel-wash', data => {
+            console.log(data.date);
+            removeWash(data.date);
+        });
+    
+    }, []);
 
     return(
         <Card>
