@@ -44,7 +44,7 @@ export default function OngoingWash({date, employee, service, removeWash}){
             removeWash(data.date);
         });
     
-    }, []);
+    });
 
     return(
         <Card>
