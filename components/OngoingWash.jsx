@@ -30,12 +30,11 @@ export default function OngoingWash({date, employee, service, removeWash}){
     }
 
     useEffect(() => {
-        console.log(process.env.PUSHER_KEY);
-        console.log(process.env.PUSHER_CLUSTER);
 
         const pusher = new Pusher(`${process.env.PUSHER_KEY}`, {
             cluster: `${process.env.PUSHER_CLUSTER}`,
-            encrypted: true
+            encrypted: true,
+            forceTLS: true
         });
     
         const channel = pusher.subscribe('franks-auto-spa');
@@ -44,7 +43,7 @@ export default function OngoingWash({date, employee, service, removeWash}){
             removeWash(data.date);
         });
     
-    });
+    }, []);
 
     return(
         <Card>
