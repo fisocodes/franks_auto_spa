@@ -24,7 +24,13 @@ export default NextAuth({
                     const match = await bcrypt.compare(credentials.password, user.password);
 
                     if(match)
-                        return {id: user.id, name: user.name, surname: user.surname}
+                        return {
+                            id: user.id,
+                            firstname: user.firstname,
+                            middlename: user.middlename,
+                            lastname1: user.lastname1,
+                            lastname2: user.lastname2
+                        }
                 }
 
                 return null;

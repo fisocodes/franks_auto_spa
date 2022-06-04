@@ -13,7 +13,7 @@ export default ({setTitle, ongoing, employees}) => {
     const [ongoingArray, setOngoingArray] = useState([]);
 
     useEffect(() => {
-        setTitle('Lavados');
+        setTitle('En curso');
 
         setOngoingArray(ongoing.map(wash => {
             return <OngoingWash key={wash.date} date={wash.date} employee={employees.find(employee => employee.id === wash.employee_id)} service={wash.service} removeWash={removeWash}/>

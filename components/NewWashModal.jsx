@@ -78,7 +78,7 @@ export default function NewWashModal({opened, setOpened})
 
     const handleCreateWash = async (e) => {
         e.preventDefault();
-        const response = await axios.post('/api/ongoing', {
+        const response = await axios.post('/api/ongoing/new', {
             date: Date.now(),
             employee_id: employee,
             service: service,

@@ -17,6 +17,7 @@ import { Button } from '@mantine/core';
 import { Affix } from '@mantine/core'
 
 import { MdDashboard } from 'react-icons/md';
+import { MdOutlineTimer } from 'react-icons/md';
 import { MdLocalCarWash } from 'react-icons/md';
 import { MdPerson } from 'react-icons/md';
 import { MdExitToApp } from 'react-icons/md';
@@ -45,18 +46,14 @@ export default function NavBar({title})
         setDrawerOpened(false);
     }
 
-    const handleWashesClick = () => {
-        router.push('/washes');
+    const handleOngoingClick = () => {
+        router.push('/ongoing');
         setDrawerOpened(false);
     }
 
     const handleEmployeesClick = () => {
         router.push('/employees');
         setDrawerOpened(false);
-    }
-
-    const handleNewWashClick = () => {
-        console.log('New wash...');
     }
 
     return(
@@ -79,12 +76,13 @@ export default function NavBar({title})
                 user ?   
                 <Drawer opened={drawerOpened} onClose={() => setDrawerOpened(false)} size="xs">
                     <Stack align="center">
-                        <Avatar size="xl">{`${user.name.toUpperCase()[0]} ${user.surname.toUpperCase()[0]}`}</Avatar>
-                        <Title order={4}>{`${user.name} ${user.surname}`}</Title>
+                        <Avatar size="xl">{`${user.firstname.toUpperCase()[0]} ${user.lastname1.toUpperCase()[0]}`}</Avatar>
+                        <Title order={4}>{`${user.firstname} ${user.lastname1}`}</Title>
                         <Button leftIcon={<MdExitToApp/>} variant="subtle" fullWidth onClick={() => signOut()} color="red">Cerrar sesión</Button>
                         <Divider size="xl" variant='solid'/>
                         <Button leftIcon={<MdDashboard/>} variant="subtle" fullWidth onClick={handleDashboardClick}>Panel</Button>
-                        <Button leftIcon={<MdLocalCarWash/>} variant="subtle" fullWidth onClick={handleWashesClick}>Lavados</Button>
+                        <Button leftIcon={<MdOutlineTimer/>} variant="subtle" fullWidth onClick={handleOngoingClick}>En curso</Button>
+                        <Button leftIcon={<MdLocalCarWash/>} variant="subtle" fullWidth>Lavados</Button>
                         <Button leftIcon={<MdPerson/>} variant="subtle" fullWidth onClick={handleEmployeesClick}>Secadores</Button>
                     </Stack>
                 </Drawer>
