@@ -10,20 +10,14 @@ import OngoingWash from "../components/OngoingWash";
 const axios =  require('axios').default;
 
 export default ({setTitle, ongoing, employees}) => {
-    const [ongoingArray, setOngoingArray] = useState([]);
+    const [ongoingArray, setOngoingArray] = useState(ongoing);
 
     useEffect(() => {
         setTitle('En curso');
-
-        setOngoingArray(ongoing.map(wash => {
-            return <OngoingWash key={wash.date} date={wash.date} employee={employees.find(employee => employee.id === wash.employee_id)} service={wash.service} removeWash={removeWash}/>
-        }));
-
     }, []);
 
     const removeWash = (date) => {
-        ongoing = ongoing.filter(wash => date !== wash.date)
-        setOngoingArray(ongoing.map(wash => <OngoingWash key={wash.date} date={wash.date} employee={employees.find(employee => employee.id === wash.employee_id)} service={wash.service} removeWash={removeWash}/>));
+        setOngoingArray(ongoingArray.filter(wash => date !== wash.date));
     }
 
     return(
@@ -31,7 +25,9 @@ export default ({setTitle, ongoing, employees}) => {
             {
                 ongoingArray.length > 0 ?
                 <Stack pt="lg" pb={70}>
-                    {ongoingArray}
+                    {
+                        ongoingArray.map(wash => <OngoingWash key={wash.date} date={wash.date} employee={employees.find(employee => employee.id === wash.employee_id)} service={wash.service} removeWash={removeWash}/>)
+                    }
                 </Stack>:
                 <Center style={{height: "80vh"}}>
                     <Stack align="center">

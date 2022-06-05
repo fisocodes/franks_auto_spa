@@ -10,25 +10,32 @@ import { Button } from '@mantine/core';
 
 import { MdPersonRemove } from 'react-icons/md';
 import { MdEdit } from 'react-icons/md';
+import { useState } from "react";
 
 const axios =  require('axios').default;
 
 export default function Employee({employee, setTitle}){
     const router = useRouter();
 
+    const [loadEdit, setLoadEdit] = useState(false);
+    const [loadDelete, setLoadDelete] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+
     useEffect(() => setTitle('Secador'), []);
 
     const handleEdit = (e) => {
+        setDisabled(true);
+        setLoadEdit(true);
         e.preventDefault();
         router.push(`/employees/edit/${employee.id}`);
-        console.log('Editing employee...');
     }
 
     const handleDelete = async (e) => {
+        setDisabled(true);
+        setLoadDelete(true);
         e.preventDefault();
-        console.log(`Employee '${employee.firstname}' deleted`);
         const response = await axios.delete('/api/employees/delete', {data: {id: employee.id}});
-        console.log(response.data);
+        router.push(`/employees/edit/${employee.id}`);
     }
 
     return(
@@ -40,10 +47,10 @@ export default function Employee({employee, setTitle}){
             </Title>
             <Grid>
                 <Grid.Col span={6} align="center">
-                    <Button leftIcon={<MdEdit/>} onClick={handleEdit}>Editar</Button>
+                    <Button leftIcon={<MdEdit/>} onClick={handleEdit} loading={loadEdit} disabled={disabled}>Editar</Button>
                 </Grid.Col>
                 <Grid.Col span={6} align="center">
-                    <Button leftIcon={<MdPersonRemove/>} color="red" onClick={handleDelete}>Eliminar</Button>
+                    <Button leftIcon={<MdPersonRemove/>} color="red" onClick={handleDelete} loading={loadDelete} disabled={disabled}>Eliminar</Button>
                 </Grid.Col>
             </Grid>
             <Center>
@@ -54,7 +61,6 @@ export default function Employee({employee, setTitle}){
 
 export async function getServerSideProps(ctx){
     const session = await getSession(ctx);
-    const {id} = ctx.query;
 
     if(!session)
         return {
@@ -64,7 +70,7 @@ export async function getServerSideProps(ctx){
             }
         }
 
-    const response =  await axios.get(`${process.env.BASE_URL}/api/employees/${id}`);
+    const response =  await axios.get(`${process.env.BASE_URL}/api/employees/${ctx.query.id}`);
     const employee = response.data.employee;
 
     if(!employee)

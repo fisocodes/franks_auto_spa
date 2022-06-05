@@ -14,6 +14,8 @@ import { useStopwatch } from 'react-timer-hook';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
+import { getSession } from 'next-auth/react';
+
 const axios =  require('axios').default;
 
 export default function OngoingWash({date, employee, service, removeWash}){
@@ -22,7 +24,7 @@ export default function OngoingWash({date, employee, service, removeWash}){
     const stopwatchOffset = new Date();
     stopwatchOffset.setSeconds(stopwatchOffset.getSeconds() + secondsOffset);
 
-    const {seconds, minutes, hours} = useStopwatch({autoStart: true, offsetTimestamp: stopwatchOffset});
+    const {seconds, minutes, hours, start} = useStopwatch({offsetTimestamp: stopwatchOffset});
     const [mounted, setMounted] = useState(false);
     const [loadCancel, setLoadCancel] = useState(false);
     const [loadFinish, setLoadFinish] = useState(false);
@@ -37,8 +39,19 @@ export default function OngoingWash({date, employee, service, removeWash}){
         setMounted(false);
     }
 
+    const handleFinish = async () => {
+        setDisabled(true);
+        setLoadFinish(true);
+        const session = await getSession();
+        const finishResponse =  await axios.post(`/api/ongoing/finish`, {user_id: session.user.id, date: date, time: (hours * 60) + minutes});
+        setLoadFinish(false);
+        setMounted(false);
+        console.log(finishResponse);
+    }
+
     useEffect(() => {
         setMounted(true);
+        start();
     }, [])
 
     return(
@@ -64,7 +77,7 @@ export default function OngoingWash({date, employee, service, removeWash}){
                                     <Text size="xl">{`${hours} : ${minutes} : ${seconds}`}</Text>        
                                 </Grid.Col>
                                 <Grid.Col span={6} align="center" >
-                                    <Button color="teal" leftIcon={<MdCheckCircle/>} disabled={disabled}>Finalizar</Button>
+                                    <Button color="teal" leftIcon={<MdCheckCircle/>} onClick={handleFinish} loading={loadFinish} disabled={disabled}>Finalizar</Button>
                                 </Grid.Col>
                                 <Grid.Col span={6} align="center">
                                 <Button color="red" leftIcon={<MdCancel/>} onClick={handleCancel} loading={loadCancel} disabled={disabled}>Cancelar</Button>

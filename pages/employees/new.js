@@ -5,8 +5,6 @@ import { useEffect } from 'react';
 
 import { Stack } from '@mantine/core';
 import { Grid } from '@mantine/core';
-import { Title } from '@mantine/core';
-
 import { TextInput } from '@mantine/core';
 import { Button } from '@mantine/core';
 import { Switch } from '@mantine/core';
@@ -25,14 +23,20 @@ export default function New({setTitle}){
     const [lastName2, setLastName2] = useState('');
     const [state, setState] = useState(true);
 
+    const [loadSave, setLoadSave] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+
     useEffect(() => setTitle('Nuevo secador'), []);
 
     const handleCancel = (e) => {
         e.preventDefault();
+        setDisabled(true);
         router.back();
     }
 
     const handleSubmit = async (e) => {
+        setDisabled(true);
+        setLoadSave(true);
         e.preventDefault();
         const response = await axios.post('/api/employees/new', {
             firstname: firstName,
@@ -41,8 +45,6 @@ export default function New({setTitle}){
             lastname2: lastName2,
             state: state
         });
-
-        console.log(response.data);
         router.push('/employees');
     }
 
@@ -66,10 +68,10 @@ export default function New({setTitle}){
                         <Switch label="Estado (activo/inactivo)" checked={state} onChange={event => setState(event.currentTarget.checked)}/>
                     </Grid.Col>
                     <Grid.Col span={6} align="center">
-                        <Button leftIcon={<MdSave/>} color="teal" type={'submit'}>Guardar</Button>
+                        <Button leftIcon={<MdSave/>} color="teal" type={'submit'} loading={loadSave} disabled={disabled}>Guardar</Button>
                     </Grid.Col>
                     <Grid.Col span={6} align="center">
-                        <Button leftIcon={<MdCancel/>} color="red" onClick={handleCancel}>Cancelar</Button>
+                        <Button leftIcon={<MdCancel/>} color="red" onClick={handleCancel} disabled={disabled}>Cancelar</Button>
                     </Grid.Col>
                 </Grid>
             </form>
