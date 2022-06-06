@@ -56,6 +56,11 @@ export default function NavBar({title})
         setDrawerOpened(false);
     }
 
+    const handleWashesClick = () => {
+        router.push('/washes');
+        setDrawerOpened(false);
+    }
+
     return(
         <>
             <Header p="xs" fixed>
@@ -82,7 +87,7 @@ export default function NavBar({title})
                         <Divider size="xl" variant='solid'/>
                         <Button leftIcon={<MdDashboard/>} variant="subtle" fullWidth onClick={handleDashboardClick}>Panel</Button>
                         <Button leftIcon={<MdOutlineTimer/>} variant="subtle" fullWidth onClick={handleOngoingClick}>En curso</Button>
-                        <Button leftIcon={<MdLocalCarWash/>} variant="subtle" fullWidth>Lavados</Button>
+                        <Button leftIcon={<MdLocalCarWash/>} variant="subtle" fullWidth onClick={handleWashesClick}>Lavados</Button>
                         <Button leftIcon={<MdPerson/>} variant="subtle" fullWidth onClick={handleEmployeesClick}>Secadores</Button>
                     </Stack>
                 </Drawer>

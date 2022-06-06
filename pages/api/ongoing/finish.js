@@ -17,15 +17,20 @@ export default async (req, res) => {
         switch(wash.service){
             case 'EXPRESS':
                 const [expressResults, expressFields] = await connection.query('UPDATE employees_stats SET express_units = express_units + 1 WHERE id = ?', [wash.employee_id]);
+                const [expressTimeResults, expressTimeFields] = await connection.query('UPDATE employees_stats SET express_average_time = express_average_time + ((? - express_average_time)/ express_units) WHERE id = ?', [req.body.time, wash.employee_id]);
                 break;
             case 'MASTER':
                 const [masterResults, masterFields] = await connection.query('UPDATE employees_stats SET master_units = master_units + 1 WHERE id = ?', [wash.employee_id]);
+                const [masterTimeResults, masterTimeFields] = await connection.query('UPDATE employees_stats SET master_average_time = master_average_time + ((? - master_average_time)/ master_units) WHERE id = ?', [req.body.time, wash.employee_id]);
                 break;
             case 'PREMIUM':
                 const [premiumResults, premiumFields] = await connection.query('UPDATE employees_stats SET premium_units = premium_units + 1 WHERE id = ?', [wash.employee_id]);
+                const [premiumTimeResults, premiumTimeFields] = await connection.query('UPDATE employees_stats SET premium_average_time = premium_average_time + ((? - premium_average_time)/ premium_units) WHERE id = ?', [req.body.time, wash.employee_id]);
                 break;
             
         }
+
+        const [timeResults, timeFields] = await connection.query('UPDATE employees_stats SET total_average_time = (express_average_time + master_average_time + premium_average_time)/3 WHERE id = ?', [req.body.time, wash.employee_id]);
 
         const [deleteResults, deleteFields] = await connection.query('DELETE FROM ongoing WHERE date = ?', [wash.date]);
         res.send('Wash finished successfully');

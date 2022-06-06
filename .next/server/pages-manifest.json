@@ -2,10 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/api/ongoing/new": "pages/api/ongoing/new.js",
   "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
-  "/ongoing": "pages/ongoing.js",
-  "/api/ongoing": "pages/api/ongoing.js",
-  "/api/employees": "pages/api/employees.js",
-  "/api/ongoing/finish": "pages/api/ongoing/finish.js"
+  "/washes": "pages/washes.js",
+  "/api/employees": "pages/api/employees.js"
 }
