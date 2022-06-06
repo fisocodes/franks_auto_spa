@@ -33,6 +33,7 @@ export async function getServerSideProps(ctx){
     const session = await getSession(ctx);
     
     const employeesresponse =  await axios.get(`${process.env.BASE_URL}/api/employees`);
+    const washesResponse = await axios.get(`${process.env.BASE_URL}/api/washes/page`, {});
     
 
     if(!session)

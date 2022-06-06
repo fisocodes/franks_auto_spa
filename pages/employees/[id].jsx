@@ -45,6 +45,7 @@ export default function Employee({employee, setTitle}){
                     `${employee.firstname} ${employee.middlename} ${employee.lastname1} ${employee.lastname2}`
                 }
             </Title>
+
             <Grid>
                 <Grid.Col span={6} align="center">
                     <Button leftIcon={<MdEdit/>} onClick={handleEdit} loading={loadEdit} disabled={disabled}>Editar</Button>

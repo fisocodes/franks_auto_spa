@@ -2,6 +2,7 @@ import Modal from '@mui/material/Modal';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import { Aside } from '@mantine/core';
 
 export default function NewEmployee({open, setOpen}){
 
