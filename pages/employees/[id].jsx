@@ -11,6 +11,9 @@ import { Button } from '@mantine/core';
 import { MdPersonRemove } from 'react-icons/md';
 import { MdEdit } from 'react-icons/md';
 import { useState } from "react";
+import React from "react";
+import {Bar} from 'react-chartjs-2';
+import {Chart} from "chart.js/auto";
 
 const axios =  require('axios').default;
 
@@ -38,14 +41,53 @@ export default function Employee({employee, setTitle}){
         router.push(`/employees/edit/${employee.id}`);
     }
 
+    const [data_units, setData] = useState([]);
+
+    const data = {
+        labels: ['Express', 'Master', 'Premium'],
+        datasets: [{
+            label: 'Servicios',
+            backgroundcolor: 'rgba(0,255,0,1)',
+            bordercolor: 'black',
+            borderwidth: 1,
+            hoverBackgroundColor: 'rgba(0,255,0,0.2)',
+            hoverBorderColor: '#FF0000',
+            data: data_units
+        }]
+    };
+
+    const graphicConfig = {
+        maintainAspectRatio: false,
+        responsive: true
+    }
+
+    const petitionApi = async()=>{
+        await axios.get(`/api/employees/stats`,{params: {id: employee.id}})
+        .then(response=>{
+            console.log(response.data);
+            var respuesta = response.data.stats;
+            setData([respuesta.express_units, respuesta.master_units, respuesta.premium_units]);
+        })
+    }
+    
+    useEffect(()=>{
+        petitionApi();
+    },[])
+
+
     return(
-        <Stack m={10}>
+        <Stack m={10} mb={70}>
             <Title order={1}>
                 {
                     `${employee.firstname} ${employee.middlename} ${employee.lastname1} ${employee.lastname2}`
                 }
             </Title>
-
+            <Stack mb={80}>
+                <div className="Employee" style={{width: '100%', height: '500px'}}>
+                    <h2>Grafica de barras de prueba</h2>
+                    <Bar data= {data} options={graphicConfig}/>
+                </div>
+            </Stack>   
             <Grid>
                 <Grid.Col span={6} align="center">
                     <Button leftIcon={<MdEdit/>} onClick={handleEdit} loading={loadEdit} disabled={disabled}>Editar</Button>
