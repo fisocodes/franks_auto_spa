@@ -84,10 +84,18 @@ export default function Employee({employee, setTitle}){
             </Title>
             <Stack mb={80}>
                 <div className="Employee" style={{width: '100%', height: '500px'}}>
-                    <h2>Grafica de barras de prueba</h2>
+                    <h2>Unidades de Servicios</h2>
                     <Bar data= {data} options={graphicConfig}/>
                 </div>
             </Stack>   
+
+            <Stack mb={80}>
+                <div className="Employee" style={{width: '100%', height: '500px'}}>
+                    <h2>Promedios de Tiempos</h2>
+                    <Bar data= {data} options={graphicConfig}/>
+                </div>
+            </Stack>   
+
             <Grid>
                 <Grid.Col span={6} align="center">
                     <Button leftIcon={<MdEdit/>} onClick={handleEdit} loading={loadEdit} disabled={disabled}>Editar</Button>
