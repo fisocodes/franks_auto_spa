@@ -13,6 +13,7 @@ import { MdEdit } from 'react-icons/md';
 import { useState } from "react";
 import React from "react";
 import {Bar} from 'react-chartjs-2';
+import {Doughnut} from 'react-chartjs-2';
 import {Chart} from "chart.js/auto";
 
 const axios =  require('axios').default;
@@ -43,6 +44,7 @@ export default function Employee({employee, setTitle}){
 
     const [data_units, setData] = useState([]);
     const [data_times, setTimes] = useState([]);
+    const [data_total, setTotal] = useState([]);
 
     const data = {
         labels: ['Express', 'Master', 'Premium'],
@@ -56,7 +58,7 @@ export default function Employee({employee, setTitle}){
             data: data_units
         }]
     };
-
+    
     const time = {
         labels: ['Express_Tiempos', 'Master_Tiempos', 'Premium_Tiempos'],
         datasets: [{
@@ -67,6 +69,19 @@ export default function Employee({employee, setTitle}){
             hoverBackgroundColor: 'rgba(0,255,0,0.2)',
             hoverBorderColor: '#FF0000',
             data: data_times
+        }]
+    };
+
+    const total = {
+        labels: ['Total_Unidades', 'Total_Tiempos'],
+        datasets: [{
+            label: 'Promedio Total',
+            backgroundcolor: 'rgba(0,255,0,1)',
+            bordercolor: 'black',
+            borderwidth: 1,
+            hoverBackgroundColor: 'rgba(0,255,0,0.2)',
+            hoverBorderColor: '#FF0000',
+            data: data_total
         }]
     };
 
@@ -82,6 +97,10 @@ export default function Employee({employee, setTitle}){
             setData([respuesta.express_units, respuesta.master_units, respuesta.premium_units]);
             var times = response.data.stats;
             setTimes([times.express_average_time, times.master_average_time, times.premium_average_time]);
+            var times = response.data.stats;
+            setTimes([times.express_average_time, times.master_average_time, times.premium_average_time]);
+            var totals = response.data.stats;
+            setTotal([totals.total_units, totals.total_average_time]);
         })
     }
     
@@ -99,17 +118,24 @@ export default function Employee({employee, setTitle}){
             </Title>
             <Stack mb={80}>
                 <div className="Employee" style={{width: '100%', height: '500px'}}>
-                    <h2>Unidades de Servicios</h2>
+                    <h2>Unidades por Servicios</h2>
                     <Bar data= {data} options={graphicConfig}/>
                 </div>
             </Stack>   
 
             <Stack mb={80}>
                 <div className="Employee" style={{width: '100%', height: '500px'}}>
-                    <h2>Promedios de Tiempos</h2>
+                    <h2>Tiempos por Servicio</h2>
                     <Bar data= {time} options={graphicConfig}/>
                 </div>
-            </Stack>   
+            </Stack>  
+
+            <Stack mb={80}>
+                <div className="Employee" style={{width: '100%', height: '500px'}}>
+                    <h2>Promedios Total</h2>
+                    <Doughnut data= {total} options={graphicConfig}/>
+                </div>
+            </Stack>  
 
             <Grid>
                 <Grid.Col span={6} align="center">
