@@ -62,10 +62,10 @@ export default function OngoingWash({date, employee, service, removeWash}){
                         <Card style={styles}>
                             <Grid align="center" justify="center">
                                 <Grid.Col span={6} align="center">
-                                    <Avatar size="lg">{employee ? `${employee.firstname[0]}${employee.lastname1[0]}` : 'Secador desconocido'}</Avatar>
+                                    <Avatar size="lg">{employee ? `${employee.firstname[0]}${employee.lastname1[0]}` : '? ?'}</Avatar>
                                 </Grid.Col>
                                 <Grid.Col span={6} align="center">
-                                    <Title order={4}>{`${employee.firstname} ${employee.lastname1}`}</Title>
+                                    <Title order={4}>{employee ? `${employee.firstname} ${employee.lastname1}` : 'Secador desconocido'}</Title>
                                 </Grid.Col>
                                 <Grid.Col span={12} align="center">
                                     <Text size="xl">{new Date(date).toLocaleString()}</Text>
