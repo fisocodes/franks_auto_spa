@@ -30,7 +30,7 @@ export default async (req, res) => {
             
         }
 
-        const [timeResults, timeFields] = await connection.query('UPDATE employees_stats SET total_average_time = (express_average_time + master_average_time + premium_average_time)/3 WHERE id = ?', [req.body.time, wash.employee_id]);
+        const [timeResults, timeFields] = await connection.query('UPDATE employees_stats SET total_average_time = (express_average_time + master_average_time + premium_average_time)/3 WHERE id = ?', [wash.employee_id]);
 
         const [deleteResults, deleteFields] = await connection.query('DELETE FROM ongoing WHERE date = ?', [wash.date]);
         res.send('Wash finished successfully');
