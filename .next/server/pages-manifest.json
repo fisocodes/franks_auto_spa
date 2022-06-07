@@ -3,8 +3,7 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
-  "/api/employees/stats": "pages/api/employees/stats.js",
+  "/washes": "pages/washes.js",
   "/api/employees": "pages/api/employees.js",
-  "/employees/[id]": "pages/employees/[id].js",
-  "/api/employees/[id]": "pages/api/employees/[id].js"
+  "/api/washes": "pages/api/washes.js"
 }

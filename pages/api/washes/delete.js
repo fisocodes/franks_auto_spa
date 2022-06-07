@@ -13,18 +13,17 @@ export default async (req, res) => {
             case 'EXPRESS':
                 const [expressResults, expressFields] = await connection.query('UPDATE employees_stats SET express_units = express_units - 1 WHERE id = ?', [wash.employee_id]);
                 const express_average_time = (stats.express_units * stats.express_average_time - wash.time)/(stats.express_units - 1);
-                console.log(express_average_time !== NaN ? express_average_time : 0);
-                const [expressTimeResults, expressTimeFields] = await connection.query('UPDATE employees_stats SET express_average_time = ? WHERE id = ?', [express_average_time !== NaN ? express_average_time : 0, wash.employee_id]);
+                const [expressTimeResults, expressTimeFields] = await connection.query('UPDATE employees_stats SET express_average_time = ? WHERE id = ?', [stats.express_units === 1 ? 0 : express_average_time, wash.employee_id]);
                 break;
             case 'MASTER':
                 const [masterResults, masterFields] = await connection.query('UPDATE employees_stats SET master_units = master_units - 1 WHERE id = ?', [wash.employee_id]);
                 const master_average_time = (stats.master_units * stats.master_average_time - wash.time)/(stats.master_units - 1);
-                const [masterTimeResults, masterTimeFields] = await connection.query('UPDATE employees_stats SET master_average_time = ? WHERE id = ?', [master_average_time !== NaN ? master_average_time : 0, wash.employee_id]);
+                const [masterTimeResults, masterTimeFields] = await connection.query('UPDATE employees_stats SET master_average_time = ? WHERE id = ?', [stats.master_units === 1 ? 0 : master_average_time, wash.employee_id]);
                 break;
             case 'PREMIUM':
                 const [premiumResults, premiumFields] = await connection.query('UPDATE employees_stats SET premium_units = premium_units - 1 WHERE id = ?', [wash.employee_id]);
                 const premium_average_time = (stats.premium_units * stats.premium_average_time - wash.time)/(stats.premium_units - 1);
-                const [premiumTimeResults, premiumTimeFields] = await connection.query('UPDATE employees_stats SET premium_average_time = ? WHERE id = ?', [premium_average_time !== NaN ? premium_average_time : 0, wash.employee_id]);
+                const [premiumTimeResults, premiumTimeFields] = await connection.query('UPDATE employees_stats SET premium_average_time = ? WHERE id = ?', [stats.premium_units === 1 ? 0 : premium_average_time, wash.employee_id]);
                 break;
             
         }

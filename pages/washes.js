@@ -1,8 +1,6 @@
 import { Title } from "@mantine/core";
 import { Center } from "@mantine/core";
 import { Stack } from "@mantine/core";
-import { Grid } from "@mantine/core";
-import { Select } from "@mantine/core";
 import { Pagination } from '@mantine/core';
 
 import { getSession } from "next-auth/react";
