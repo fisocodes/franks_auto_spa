@@ -44,44 +44,44 @@ export default function Employee({employee, setTitle}){
 
     const [data_units, setData] = useState([]);
     const [data_times, setTimes] = useState([]);
-    const [data_total, setTotal] = useState([]);
+    const [data_porcentage, setPorcentage] = useState([]);
 
     const data = {
         labels: ['Express', 'Master', 'Premium'],
         datasets: [{
-            label: 'Servicios',
-            backgroundcolor: 'rgba(0,255,0,1)',
-            bordercolor: 'black',
+            label: [' '],
+            backgroundColor: ['#6a994e','#4ea8de','#f08080'],
+            borderColor: ['#90a955','#56cfe1','#f4978e'],
             borderwidth: 1,
-            hoverBackgroundColor: 'rgba(0,255,0,0.2)',
-            hoverBorderColor: '#FF0000',
+            hoverBackgroundColor: ['#90a955','#56cfe1','#f4978e'], 
+            hoverBorderColor: ['#6a994e','#4ea8de','#f08080'],
             data: data_units
         }]
     };
     
     const time = {
-        labels: ['Express_Tiempos', 'Master_Tiempos', 'Premium_Tiempos'],
+        labels: ['Express', 'Master', 'Premium'],
         datasets: [{
-            label: 'Tiempos',
-            backgroundcolor: 'rgba(0,255,0,1)',
-            bordercolor: 'black',
+            label: ' ',
+            backgroundColor: ['#6a994e','#4ea8de','#f08080'],
+            borderColor: ['#90a955','#56cfe1','#f4978e'],
             borderwidth: 1,
-            hoverBackgroundColor: 'rgba(0,255,0,0.2)',
-            hoverBorderColor: '#FF0000',
+            hoverBackgroundColor: ['#90a955','#c56cfe1','#f4978e'],
+            hoverBorderColor: ['#6a994e','#4ea8de','#f08080'],
             data: data_times
         }]
     };
 
-    const total = {
-        labels: ['Total_Unidades', 'Total_Tiempos'],
+    const porcentage = {
+        labels: ['Express', 'Master', 'Premium'],
         datasets: [{
             label: 'Promedio Total',
-            backgroundcolor: 'rgba(0,255,0,1)',
-            bordercolor: 'black',
+            backgroundColor: ['#6a994e','#4ea8de','#f08080'],
+            borderColor: ['#6a994e','#4ea8de','#f08080'],
             borderwidth: 1,
-            hoverBackgroundColor: 'rgba(0,255,0,0.2)',
-            hoverBorderColor: '#FF0000',
-            data: data_total
+            hoverBackgroundColor: ['#90a955','#56cfe1','#f4978e'],
+            hoverBorderColor: ['#6a994e','#4ea8de','#f08080'],
+            data: data_porcentage
         }]
     };
 
@@ -97,13 +97,15 @@ export default function Employee({employee, setTitle}){
             setData([respuesta.express_units, respuesta.master_units, respuesta.premium_units]);
             var times = response.data.stats;
             setTimes([times.express_average_time, times.master_average_time, times.premium_average_time]);
-            var times = response.data.stats;
-            setTimes([times.express_average_time, times.master_average_time, times.premium_average_time]);
-            var totals = response.data.stats;
-            setTotal([totals.total_units, totals.total_average_time]);
+
+            var porE = (respuesta.express_units * 100)/respuesta.total_units;
+            var porM = (respuesta.master_units * 100)/respuesta.total_units;
+            var porP = (respuesta.premium_units * 100)/respuesta.total_units;
+            setPorcentage([porE, porM, porP]);
         })
     }
-    
+
+
     useEffect(()=>{
         petitionApi();
     },[])
@@ -118,22 +120,22 @@ export default function Employee({employee, setTitle}){
             </Title>
             <Stack mb={80}>
                 <div className="Employee" style={{width: '100%', height: '500px'}}>
-                    <h2>Unidades por Servicios</h2>
+                    <h2>Unidades por servicio</h2>
                     <Bar data= {data} options={graphicConfig}/>
                 </div>
             </Stack>   
 
             <Stack mb={80}>
                 <div className="Employee" style={{width: '100%', height: '500px'}}>
-                    <h2>Tiempos por Servicio</h2>
+                    <h2>Tiempos promedio por servicio</h2>
                     <Bar data= {time} options={graphicConfig}/>
                 </div>
             </Stack>  
 
             <Stack mb={80}>
                 <div className="Employee" style={{width: '100%', height: '500px'}}>
-                    <h2>Promedios Total</h2>
-                    <Doughnut data= {total} options={graphicConfig}/>
+                    <h2>Promedios total por servicio</h2>
+                    <Doughnut data= {porcentage} options={graphicConfig}/>
                 </div>
             </Stack>  
 

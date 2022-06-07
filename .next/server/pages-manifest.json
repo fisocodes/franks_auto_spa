@@ -1,5 +1,18 @@
 {
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
+<<<<<<< HEAD
   "/_document": "pages/_document.js"
+=======
+  "/_document": "pages/_document.js",
+<<<<<<< HEAD
+  "/api/employees/stats": "pages/api/employees/stats.js",
+  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js"
+=======
+  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
+  "/washes": "pages/washes.js",
+  "/api/employees": "pages/api/employees.js",
+  "/api/washes": "pages/api/washes.js"
+>>>>>>> abcccfc9c56c00ac5f313c9f4402a53a036163a5
+>>>>>>> b3c488142248cbf2b0a69c7baaf662706f077e12
 }
