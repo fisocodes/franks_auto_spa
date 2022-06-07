@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 import { Card } from "@mantine/core";
 import { Group } from "@mantine/core";
@@ -10,8 +11,10 @@ import { MdVisibility } from 'react-icons/md';
 
 export default function EmployeeCard({employee}){
     const router = useRouter();
+    const [loadView, setLoadView] = useState(false);
 
     const handleView = () => {
+        setLoadView(true);
         router.push(`/employees/${employee.id}`);
     }
 
@@ -24,7 +27,7 @@ export default function EmployeeCard({employee}){
                     }
                 </Avatar>
                 <Title order={4}>{`${employee.firstname} ${employee.lastname1}`}</Title>
-                <Button leftIcon={<MdVisibility/>} onClick={handleView}>Ver</Button>
+                <Button leftIcon={<MdVisibility/>} onClick={handleView} loading={loadView}>Ver</Button>
             </Group>
         </Card>
     );

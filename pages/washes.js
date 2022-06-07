@@ -2,6 +2,7 @@ import { Title } from "@mantine/core";
 import { Center } from "@mantine/core";
 import { Stack } from "@mantine/core";
 import { Pagination } from '@mantine/core';
+import { Loader } from '@mantine/core';
 
 import { getSession } from "next-auth/react";
 import { useEffect } from "react";
@@ -15,6 +16,7 @@ export default ({setTitle, employees, total_washes}) => {
 
     const[page, setPage] = useState(1);
     const[washes, setWashes] = useState([]);
+    const[loader, setLoader] = useState(true);
 
     useEffect(() => {
         setTitle('Lavados');
@@ -22,6 +24,7 @@ export default ({setTitle, employees, total_washes}) => {
         const getWashes = async () => {
             const washesResponse = await axios.get('/api/washes/page', {params: {page: page}});
             setWashes(washesResponse.data.washes);
+            setLoader(false);
         }
 
         getWashes();
@@ -34,22 +37,30 @@ export default ({setTitle, employees, total_washes}) => {
 
     return(
         <>
-            {
-                washes.length > 0 ? 
-                <>
-                    <Stack pt="lg" pb={70}>
-                        {washes.map(wash => <Wash key={wash.id} wash={wash} employee={employees.find(employee => employee.id === wash.employee_id)} removeWash={removeWash}/>)}
-                    </Stack>
-                    <Pagination total={Math.ceil(total_washes / 5)} page={page} onChange={setPage} position="center"/>
-                </>
-                :
-                <Center style={{height: "80vh"}}>
-                    <Stack align="center">
-                        <Title>{":("}</Title>
-                        <Title order={3}>{"No hay lavados"}</Title>
-                    </Stack>
-                </Center>
-            }
+        {
+            loader ? 
+            <Center style={{height: "80vh"}}>
+                <Loader variant="dots" size="xl" color="yellow"/>:
+            </Center>:
+            <>
+                {
+                    washes.length > 0 ? 
+                    <>
+                        <Stack pt="lg" pb={70}>
+                            {washes.map(wash => <Wash key={wash.id} wash={wash} employee={employees.find(employee => employee.id === wash.employee_id)} removeWash={removeWash}/>)}
+                        </Stack>
+                        <Pagination total={Math.ceil(total_washes / 5)} page={page} onChange={setPage} position="center"/>
+                    </>
+                    :
+                    <Center style={{height: "80vh"}}>
+                        <Stack align="center">
+                            <Title>{":("}</Title>
+                            <Title order={3}>{"No hay lavados"}</Title>
+                        </Stack>
+                    </Center>
+                }
+            </>
+        }
         </>
     );
 }
