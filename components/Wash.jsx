@@ -42,7 +42,7 @@ export default function Wash({wash, employee, removeWash}){
                                 <Text>{new Date(wash.date).toLocaleDateString()}</Text>
                             </Grid.Col>
                             <Grid.Col span={5}>
-                                <Title order={5}>{`${employee.firstname} ${employee.lastname1}`}</Title>
+                                <Title order={5}>{employee ? `${employee.firstname[0]}${employee.lastname1[0]}` : 'Secador desconocido'}</Title>
                             </Grid.Col>
                             <Grid.Col span={2} align="center">
                                 <ActionIcon variant="filled" color="red" onClick={handleDelete} loading={loadDelete}>
