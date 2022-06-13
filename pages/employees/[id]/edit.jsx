@@ -40,7 +40,7 @@ export default ({employee, setTitle}) => {
         e.preventDefault();
         setDisabled(true);
         setLoadSave(true);
-        const response = await axios.put('/api/employees/edit', {
+        const response = await axios.put(`/api/employees/${employee.id}`, {
             id: employee.id,
             firstname: firstName,
             middlename: middleName,

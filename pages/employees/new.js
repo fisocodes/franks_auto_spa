@@ -38,7 +38,9 @@ export default function New({setTitle}){
         setDisabled(true);
         setLoadSave(true);
         e.preventDefault();
-        const response = await axios.post('/api/employees/new', {
+        console.log('empleado creado');
+        
+        const response = await axios.post('/api/employees', {
             firstname: firstName,
             middlename: middleName,
             lastname1: lastName1,
@@ -52,26 +54,26 @@ export default function New({setTitle}){
         <Stack m={10}>
             <form onSubmit={handleSubmit}>
                 <Grid grow>
-                    <Grid.Col span={6}>
+                    <Grid.Col span={12}>
                         <TextInput required label="Primer nombre" onChange={event => setFirstName(event.currentTarget.value)}/>
                     </Grid.Col>
-                    <Grid.Col span={6}>
+                    <Grid.Col span={12}>
                         <TextInput label="Segundo nombre" onChange={event => setMiddleName(event.currentTarget.value)}/>
                     </Grid.Col>
-                    <Grid.Col span={6}>
+                    <Grid.Col span={12}>
                         <TextInput required label="Apellido paterno" onChange={event => setLastName1(event.currentTarget.value)}/>
                     </Grid.Col>
-                    <Grid.Col span={6}>
-                        <TextInput label="Apellido materno" onChange={event => setLastName2(event.currentTarget.value)}/>
+                    <Grid.Col span={12}>
+                        <TextInput required label="Apellido materno" onChange={event => setLastName2(event.currentTarget.value)}/>
                     </Grid.Col>
                     <Grid.Col span={12}>
                         <Switch label="Estado (activo/inactivo)" checked={state} onChange={event => setState(event.currentTarget.checked)}/>
                     </Grid.Col>
-                    <Grid.Col span={6} align="center">
-                        <Button leftIcon={<MdSave/>} color="teal" type={'submit'} loading={loadSave} disabled={disabled}>Guardar</Button>
+                    <Grid.Col span={12} align="center">
+                        <Button leftIcon={<MdSave/>} color="teal" type={'submit'} loading={loadSave} disabled={disabled} fullWidth>Guardar</Button>
                     </Grid.Col>
-                    <Grid.Col span={6} align="center">
-                        <Button leftIcon={<MdCancel/>} color="red" onClick={handleCancel} disabled={disabled}>Cancelar</Button>
+                    <Grid.Col span={12} align="center">
+                        <Button leftIcon={<MdCancel/>} color="red" onClick={handleCancel} disabled={disabled} fullWidth>Cancelar</Button>
                     </Grid.Col>
                 </Grid>
             </form>

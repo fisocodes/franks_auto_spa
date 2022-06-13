@@ -31,15 +31,15 @@ export default function Employee({employee, setTitle}){
         setDisabled(true);
         setLoadEdit(true);
         e.preventDefault();
-        router.push(`/employees/edit/${employee.id}`);
+        router.push(`/employees/${employee.id}/edit`);
     }
 
     const handleDelete = async (e) => {
         setDisabled(true);
         setLoadDelete(true);
         e.preventDefault();
-        const response = await axios.delete('/api/employees/delete', {data: {id: employee.id}});
-        router.push(`/employees/edit/${employee.id}`);
+        const response = await axios.delete(`/api/employees/${employee.id}`);
+        router.push(`/employees`);
     }
 
     const [data_units, setData] = useState([]);
@@ -91,7 +91,7 @@ export default function Employee({employee, setTitle}){
     }
 
     const petitionApi = async()=>{
-        await axios.get(`/api/employees/stats`,{params: {id: employee.id}})
+        await axios.get(`/api/employees/${employee.id}/stats`)
         .then(response=>{
             var respuesta = response.data.stats;
             setData([respuesta.express_units, respuesta.master_units, respuesta.premium_units]);
