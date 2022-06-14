@@ -3,9 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
-  "/api/ongoing": "pages/api/ongoing.js",
-  "/ongoing": "pages/ongoing.js",
-  "/api/employees": "pages/api/employees.js",
-  "/api/ongoing/new": "pages/api/ongoing/new.js",
-  "/api/ongoing/cancel": "pages/api/ongoing/cancel.js"
+  "/employees": "pages/employees.js",
+  "/api/employees": "pages/api/employees.js"
 }
