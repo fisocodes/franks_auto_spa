@@ -89,7 +89,6 @@ export default function NewWashModal({opened, setOpened})
             }
         });
         setOpened(!opened);
-        console.log(response.data);
     }
 
     return(

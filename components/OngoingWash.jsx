@@ -6,9 +6,10 @@ import { Button } from "@mantine/core";
 import { Grid } from "@mantine/core";
 import { Transition } from '@mantine/core';
 import { Collapse } from "@mantine/core";
+import { Badge } from '@mantine/core';
 
-import { MdCancel } from 'react-icons/md';
-import { MdCheckCircle } from 'react-icons/md';
+import FinishButton from "./buttons/FinishButton";
+import CancelButton from "./buttons/CancelButton";
 
 import { useStopwatch } from 'react-timer-hook';
 import { useState } from 'react';
@@ -18,9 +19,9 @@ import { getSession } from 'next-auth/react';
 
 const axios =  require('axios').default;
 
-export default function OngoingWash({date, employee, service, removeWash}){
+export default function OngoingWash({wash, removeWash}){
 
-    const secondsOffset = Math.floor((Date.now() - date)/1000);
+    const secondsOffset = Math.floor((Date.now() - wash.date)/1000);
     const stopwatchOffset = new Date();
     stopwatchOffset.setSeconds(stopwatchOffset.getSeconds() + secondsOffset);
 
@@ -34,7 +35,7 @@ export default function OngoingWash({date, employee, service, removeWash}){
     const handleCancel = async () => {
         setDisabled(true);
         setLoadCancel(true);
-        const cancelResponse =  await axios.put(`/api/ongoing/cancel`, {date: date});
+        const cancelResponse =  await axios.put(`/api/ongoing/cancel`, {date: wash.date});
         setLoadCancel(false);
         setMounted(false);
     }
@@ -43,10 +44,9 @@ export default function OngoingWash({date, employee, service, removeWash}){
         setDisabled(true);
         setLoadFinish(true);
         const session = await getSession();
-        const finishResponse =  await axios.post(`/api/ongoing/finish`, {user_id: session.user.id, date: date, time: (hours * 60) + minutes});
+        const finishResponse =  await axios.post(`/api/ongoing/finish`, {user_id: session.user.id, date: wash.date, time: (hours * 60) + minutes});
         setLoadFinish(false);
         setMounted(false);
-        console.log(finishResponse);
     }
 
     useEffect(() => {
@@ -55,32 +55,29 @@ export default function OngoingWash({date, employee, service, removeWash}){
     }, [])
 
     return(
-        <Collapse in={collapse} onTransitionEnd={() => removeWash(date)} transitionDuration={600}>
+        <Collapse in={collapse} onTransitionEnd={() => removeWash(wash.date)} transitionDuration={600}>
             <Transition mounted={mounted} transition="slide-right" duration={Math.random() * 500 + 300} timingFunction="ease" onExit={() => setCollapse(false)}>
                 {
                     (styles) => 
                         <Card style={styles}>
                             <Grid align="center" justify="center">
-                                <Grid.Col span={6} align="center">
-                                    <Avatar size="lg">{employee ? `${employee.firstname[0]}${employee.lastname1[0]}` : '? ?'}</Avatar>
+                                <Grid.Col span={6}>
+                                    <Title order={4}>{wash.employee ? `${wash.employee.firstname} ${wash.employee.lastname1}` : 'Secador desconocido'}</Title>
                                 </Grid.Col>
                                 <Grid.Col span={6} align="center">
-                                    <Title order={4}>{employee ? `${employee.firstname} ${employee.lastname1}` : 'Secador desconocido'}</Title>
+                                    <Text size="md">{new Date(wash.date).toLocaleString()}</Text>
                                 </Grid.Col>
-                                <Grid.Col span={12} align="center">
-                                    <Text size="xl">{new Date(date).toLocaleString()}</Text>
-                                </Grid.Col>
-                                <Grid.Col span={6} align="center">
-                                    <Text size="xl">{service}</Text>
+                                <Grid.Col span={6}>
+                                    <Badge size="lg" color="yellow" variant="outline">{wash.service}</Badge>
                                 </Grid.Col>
                                 <Grid.Col span={6} align="center">
-                                    <Text size="xl">{`${hours} : ${minutes} : ${seconds}`}</Text>        
+                                    <FinishButton onClick={handleFinish}/>
+                                </Grid.Col>
+                                <Grid.Col span={6}>
+                                    <Badge size="lg" color="blue" variant="outline">{`${hours} : ${minutes} : ${seconds}`}</Badge>     
                                 </Grid.Col>
                                 <Grid.Col span={6} align="center" >
-                                    <Button color="teal" leftIcon={<MdCheckCircle/>} onClick={handleFinish} loading={loadFinish} disabled={disabled}>Finalizar</Button>
-                                </Grid.Col>
-                                <Grid.Col span={6} align="center">
-                                <Button color="red" leftIcon={<MdCancel/>} onClick={handleCancel} loading={loadCancel} disabled={disabled}>Cancelar</Button>
+                                    <CancelButton onClick={handleCancel}/>
                                 </Grid.Col>
                             </Grid>
                         </Card>
