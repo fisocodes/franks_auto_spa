@@ -3,7 +3,6 @@ const mysql = require('mysql2/promise');
 export default async (req, res) => {
     if(req.method === 'POST')
     {
-        console.log(req.body);
         const connection = await mysql.createConnection(process.env.DATABASE_URL);
 
         connection.query(

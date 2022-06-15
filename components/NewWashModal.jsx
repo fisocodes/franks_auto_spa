@@ -1,11 +1,10 @@
 import { Modal } from '@mantine/core';
-import { Title } from '@mantine/core';
-import { Button } from '@mantine/core';
 import { Grid } from '@mantine/core';
 import { Select } from '@mantine/core';
 
-import { MdCancel } from 'react-icons/md'
-import { MdCreate } from 'react-icons/md'
+import CancelButton from './buttons/CancelButton';
+import CreateButton from './buttons/CreateButton';
+
 import { useEffect } from 'react';
 import { useState } from 'react';
 
@@ -76,8 +75,7 @@ export default function NewWashModal({opened, setOpened})
         
     }, []);
 
-    const handleCreateWash = async (e) => {
-        e.preventDefault();
+    const handleCreateWash = async () => {
         const response = await axios.post('/api/ongoing/new', {
             date: Date.now(),
             employee_id: employee,
@@ -93,31 +91,28 @@ export default function NewWashModal({opened, setOpened})
 
     return(
         <Modal centered opened={opened} onClose={() => setOpened(!opened)} title="Nuevo lavado" size="full">
-            <form onSubmit={handleCreateWash}>    
+            <form>    
                 <Grid gutter="lg">
                     <Grid.Col span={12}>
-                        <Select required searchable data={employeesSelectorData} onChange={setEmployee} label="Secador(es)"/>
+                        <Select required searchable data={employeesSelectorData} onChange={setEmployee} label="Secador"/>
                     </Grid.Col>
                     <Grid.Col span={12}>
                         <Select searchable value={service} onChange={setService} data={servicesSelectorData} label="Servicio"/>
                     </Grid.Col>
                     <Grid.Col span={12}>
-                        <Title order={6}>Unidad</Title>
-                    </Grid.Col>
-                    <Grid.Col span={6}>
                         <Select searchable value={brand} onChange={handleBrandChange} data={brandsSelectorData} label="Marca"/>
                     </Grid.Col>
-                    <Grid.Col span={6}>
+                    <Grid.Col span={12}>
                         <Select searchable value={model} onChange={setModel} data={modelsSelectorData} label="Modelo"/>
                     </Grid.Col>
                     <Grid.Col span={12} align="center">
                         <Select label="Color" value={colour} onChange={setColour} data={colourSelectorData}/>
                     </Grid.Col>
                     <Grid.Col span={6} align="center">
-                        <Button type='submit' leftIcon={<MdCreate/>} color="teal">Crear</Button>
+                        <CreateButton type="submit" onClick={handleCreateWash}/>
                     </Grid.Col>
                     <Grid.Col span={6} align="center">
-                        <Button leftIcon={<MdCancel/>} color="red" onClick={() => setOpened(!opened)}>Cancelar</Button>
+                        <CancelButton onClick={() => setOpened(false)}/>
                     </Grid.Col>
                 </Grid>
             </form>
