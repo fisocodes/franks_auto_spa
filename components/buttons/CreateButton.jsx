@@ -12,7 +12,7 @@ const CreateButton = ({onClick}) => {
         onClick();
     }
 
-    return <Button color="yellow" leftIcon={<MdCreate/>} onClick={handleClick} loading={loading}>Create</Button>
+    return <Button fullWidth color="yellow" leftIcon={<MdCreate/>} onClick={handleClick} loading={loading}>Create</Button>
 }
 
 export default CreateButton;

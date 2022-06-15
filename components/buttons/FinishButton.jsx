@@ -12,7 +12,7 @@ const FinishButton = ({onClick}) => {
         onClick();
     }
 
-    return <Button color="yellow" leftIcon={<MdCheckCircle/>} onClick={handleClick} loading={loading}>Finalizar</Button>
+    return <Button fullWidth color="yellow" leftIcon={<MdCheckCircle/>} onClick={handleClick} loading={loading}>Finalizar</Button>
 }
 
 export default FinishButton;

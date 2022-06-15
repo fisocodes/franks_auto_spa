@@ -1,18 +1,30 @@
 import { Modal } from '@mantine/core';
 import { Grid } from '@mantine/core';
 import { Select } from '@mantine/core';
+import { Group } from '@mantine/core';
 
 import CancelButton from './buttons/CancelButton';
 import CreateButton from './buttons/CreateButton';
 
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
+import { forwardRef } from 'react';
 
 import { brands } from '../constants/brands';
 import { services } from '../constants/services';
 import { colours } from '../constants/colours';
 
 const axios =  require('axios').default;
+
+const selectBrandItem = forwardRef(
+    ({logo, label, ...others}, ref) => (
+        <div ref={ref} {...others}>
+            <Group noWrap>
+                {logo} {label} 
+            </Group>
+        </div>
+    )
+);
 
 export default function NewWashModal({opened, setOpened})
 {
@@ -28,6 +40,7 @@ export default function NewWashModal({opened, setOpened})
     const brandsSelectorData = brands.map(brand => {
         return {
             value: `${brand.name}`,
+            logo: brand.logo ? brand.logo : null,
             label: `${brand.name}`
         }
     });
@@ -100,7 +113,7 @@ export default function NewWashModal({opened, setOpened})
                         <Select searchable value={service} onChange={setService} data={servicesSelectorData} label="Servicio"/>
                     </Grid.Col>
                     <Grid.Col span={12}>
-                        <Select searchable value={brand} onChange={handleBrandChange} data={brandsSelectorData} label="Marca"/>
+                        <Select searchable itemComponent={selectBrandItem} value={brand} onChange={handleBrandChange} data={brandsSelectorData} label="Marca"/>
                     </Grid.Col>
                     <Grid.Col span={12}>
                         <Select searchable value={model} onChange={setModel} data={modelsSelectorData} label="Modelo"/>

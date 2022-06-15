@@ -12,7 +12,7 @@ const ViewButton = ({onClick}) => {
         onClick();
     }
 
-    return <Button leftIcon={<MdVisibility/>} onClick={handleClick} loading={loading}>Ver</Button>
+    return <Button fullWidth leftIcon={<MdVisibility/>} onClick={handleClick} loading={loading}>Ver</Button>
 }
 
 export default ViewButton;

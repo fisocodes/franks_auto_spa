@@ -12,7 +12,7 @@ const CancelButton = ({onClick}) => {
         onClick();
     }
 
-    return <Button color="blue" leftIcon={<MdCancel/>} onClick={handleClick} loading={loading}>Cancelar</Button>
+    return <Button fullWidth color="blue" leftIcon={<MdCancel/>} onClick={handleClick} loading={loading}>Cancelar</Button>
 }
 
 export default CancelButton;

@@ -6,11 +6,10 @@ import { useEffect } from 'react';
 import { Stack } from '@mantine/core';
 import { Grid } from '@mantine/core';
 import { TextInput } from '@mantine/core';
-import { Button } from '@mantine/core';
 import { Switch } from '@mantine/core';
 
-import { MdSave } from 'react-icons/md';
-import { MdCancel } from 'react-icons/md';
+import CancelButton from '../../components/buttons/CancelButton';
+import SaveButton from '../../components/buttons/SaveButton';
 
 const axios =  require('axios').default;
 
@@ -28,16 +27,14 @@ export default function New({setTitle}){
 
     useEffect(() => setTitle('Nuevo secador'), []);
 
-    const handleCancel = (e) => {
-        e.preventDefault();
+    const handleCancel = () => {
         setDisabled(true);
         router.back();
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async () => {
         setDisabled(true);
         setLoadSave(true);
-        e.preventDefault();
         console.log('empleado creado');
         
         const response = await axios.post('/api/employees', {
@@ -70,10 +67,10 @@ export default function New({setTitle}){
                         <Switch label="Estado (activo/inactivo)" checked={state} onChange={event => setState(event.currentTarget.checked)}/>
                     </Grid.Col>
                     <Grid.Col span={12} align="center">
-                        <Button leftIcon={<MdSave/>} color="teal" type={'submit'} loading={loadSave} disabled={disabled} fullWidth>Guardar</Button>
+                        <SaveButton onClick={handleSubmit}/>
                     </Grid.Col>
                     <Grid.Col span={12} align="center">
-                        <Button leftIcon={<MdCancel/>} color="red" onClick={handleCancel} disabled={disabled} fullWidth>Cancelar</Button>
+                        <CancelButton onClick={handleCancel}/>
                     </Grid.Col>
                 </Grid>
             </form>
