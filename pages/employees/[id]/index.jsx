@@ -111,7 +111,7 @@ export default function Employee({id, setTitle}){
         router.push(`/employees`);
     }
 
-    if(!employee)
+    if(!employee && !stats)
     return(
         <Center style={{height: "80vh"}}>
             <Loader variant="dots" size="xl" color="yellow"/>:
@@ -133,7 +133,7 @@ export default function Employee({id, setTitle}){
                             <Title order={5}>Unidades</Title>
                         </Stack>
                         <Stack>
-                            <Title order={2}>{stats.total_units}</Title>
+                            <Title order={2}>{stats?.total_units}</Title>
                         </Stack>
                     </Paper>
                 </Grid.Col>
@@ -143,7 +143,7 @@ export default function Employee({id, setTitle}){
                             <Title order={5}>Tiempo prom</Title>
                         </Stack>
                         <Stack>
-                            <Title order={2}>{stats.total_average_time}</Title>
+                            <Title order={2}>{stats?.total_average_time}</Title>
                         </Stack>
                     </Paper>
                 </Grid.Col>
