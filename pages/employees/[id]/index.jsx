@@ -1,31 +1,100 @@
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from 'react';
+import { useState } from "react";
 
 import { Stack } from '@mantine/core';
 import { Grid } from "@mantine/core";
 import { Center } from '@mantine/core';
 import { Title } from '@mantine/core';
 import { Button } from '@mantine/core';
+import { Loader } from '@mantine/core';
+import { Paper } from '@mantine/core';
+
+import { ResponsiveContainer } from "recharts";
+import { BarChart } from "recharts";
+import { XAxis } from "recharts";
+import { YAxis } from "recharts";
+import { Bar } from "recharts";
+import { Tooltip } from "recharts";
+import { PieChart } from "recharts";
+import { Pie } from "recharts";
 
 import { MdPersonRemove } from 'react-icons/md';
 import { MdEdit } from 'react-icons/md';
-import { useState } from "react";
-import React from "react";
-import {Bar} from 'react-chartjs-2';
-import {Doughnut} from 'react-chartjs-2';
-import {Chart} from "chart.js/auto";
 
+import { getEmployee } from "../../../utils/api";
+import { getEmployeeStats } from "../../../utils/api";
 const axios =  require('axios').default;
 
-export default function Employee({employee, setTitle}){
+export default function Employee({id, setTitle}){
     const router = useRouter();
 
+    const [employee, setEmployee] = useState(null);
+    const [stats, setStats] = useState(null);
+    const [unitsData, setUnitsData] = useState(null);
+    const [timeData, setTimeData] = useState(null);
+    const [percentageData, setPercentageData] = useState(null);
     const [loadEdit, setLoadEdit] = useState(false);
     const [loadDelete, setLoadDelete] = useState(false);
     const [disabled, setDisabled] = useState(false);
 
-    useEffect(() => setTitle('Secador'), []);
+    useEffect(() => {
+        setTitle('Secador');
+
+        getEmployee(id).then(employee => {
+            if(!employee){
+                router.push('/employees');
+            }
+            setEmployee(employee);
+        });
+
+        getEmployeeStats(id).then(stats => {
+            setStats(stats);
+            setUnitsData([
+                {
+                    name: "EXPRESS",
+                    units: stats.express_units
+                },
+                {
+                    name: "MASTER",
+                    units: stats.master_units
+                },
+                {
+                    name: "PREMIUM",
+                    units: stats.premium_units
+                }
+            ]);
+            setTimeData([
+                {
+                    name: "EXPRESS",
+                    average_time: stats.express_average_time
+                },
+                {
+                    name: "MASTER",
+                    average_time: stats.master_average_time
+                },
+                {
+                    name: "PREMIUM",
+                    average_time: stats.premium_average_time
+                }
+            ]);
+            setPercentageData([
+                {
+                    name: "EXPRESS",
+                    percentage: stats.express_units * 100 / stats.total_units
+                },
+                {
+                    name: "MASTER",
+                    percentage: stats.master_units * 100 / stats.total_units
+                },
+                {
+                    name: "PREMIUM",
+                    percentage: stats.premium_units * 100 / stats.total_units
+                },
+            ]);
+        });
+    }, []);
 
     const handleEdit = (e) => {
         setDisabled(true);
@@ -42,102 +111,71 @@ export default function Employee({employee, setTitle}){
         router.push(`/employees`);
     }
 
-    const [data_units, setData] = useState([]);
-    const [data_times, setTimes] = useState([]);
-    const [data_porcentage, setPorcentage] = useState([]);
-
-    const data = {
-        labels: ['Express', 'Master', 'Premium'],
-        datasets: [{
-            label: [' '],
-            backgroundColor: ['#6a994e','#4ea8de','#f08080'],
-            borderColor: ['#90a955','#56cfe1','#f4978e'],
-            borderwidth: 1,
-            hoverBackgroundColor: ['#90a955','#56cfe1','#f4978e'], 
-            hoverBorderColor: ['#6a994e','#4ea8de','#f08080'],
-            data: data_units
-        }]
-    };
-    
-    const time = {
-        labels: ['Express', 'Master', 'Premium'],
-        datasets: [{
-            label: ' ',
-            backgroundColor: ['#6a994e','#4ea8de','#f08080'],
-            borderColor: ['#90a955','#56cfe1','#f4978e'],
-            borderwidth: 1,
-            hoverBackgroundColor: ['#90a955','#c56cfe1','#f4978e'],
-            hoverBorderColor: ['#6a994e','#4ea8de','#f08080'],
-            data: data_times
-        }]
-    };
-
-    const porcentage = {
-        labels: ['Express', 'Master', 'Premium'],
-        datasets: [{
-            label: 'Promedio Total',
-            backgroundColor: ['#6a994e','#4ea8de','#f08080'],
-            borderColor: ['#6a994e','#4ea8de','#f08080'],
-            borderwidth: 1,
-            hoverBackgroundColor: ['#90a955','#56cfe1','#f4978e'],
-            hoverBorderColor: ['#6a994e','#4ea8de','#f08080'],
-            data: data_porcentage
-        }]
-    };
-
-    const graphicConfig = {
-        maintainAspectRatio: false,
-        responsive: true
-    }
-
-    const petitionApi = async()=>{
-        await axios.get(`/api/employees/${employee.id}/stats`)
-        .then(response=>{
-            var respuesta = response.data.stats;
-            setData([respuesta.express_units, respuesta.master_units, respuesta.premium_units]);
-            var times = response.data.stats;
-            setTimes([times.express_average_time, times.master_average_time, times.premium_average_time]);
-
-            var porE = (respuesta.express_units * 100)/respuesta.total_units;
-            var porM = (respuesta.master_units * 100)/respuesta.total_units;
-            var porP = (respuesta.premium_units * 100)/respuesta.total_units;
-            setPorcentage([porE, porM, porP]);
-        })
-    }
-
-
-    useEffect(()=>{
-        petitionApi();
-    },[])
-
+    if(!employee)
+    return(
+        <Center style={{height: "80vh"}}>
+            <Loader variant="dots" size="xl" color="yellow"/>:
+        </Center>
+    );
 
     return(
-        <Stack m={10} mb={70}>
+        <Stack m={10} mb={70} spacing="xl">
             <Title order={1}>
                 {
-                    `${employee.firstname} ${employee.middlename} ${employee.lastname1} ${employee.lastname2}`
+                    `${employee?.firstname} ${employee?.middlename} ${employee?.lastname1} ${employee?.lastname2}`
                 }
             </Title>
-            <Stack mb={80}>
-                <div className="Employee" style={{width: '100%', height: '500px'}}>
-                    <h2>Unidades por servicio</h2>
-                    <Bar data= {data} options={graphicConfig}/>
-                </div>
-            </Stack>   
 
-            <Stack mb={80}>
-                <div className="Employee" style={{width: '100%', height: '500px'}}>
-                    <h2>Tiempos promedio por servicio</h2>
-                    <Bar data= {time} options={graphicConfig}/>
-                </div>
-            </Stack>  
+            <Grid>
+                <Grid.Col span={6} align="center">
+                    <Paper p="md">
+                        <Stack>
+                            <Title order={5}>Unidades</Title>
+                        </Stack>
+                        <Stack>
+                            <Title order={2}>{stats.total_units}</Title>
+                        </Stack>
+                    </Paper>
+                </Grid.Col>
+                <Grid.Col span={6} align="center">
+                    <Paper p="md">
+                        <Stack>
+                            <Title order={5}>Tiempo prom</Title>
+                        </Stack>
+                        <Stack>
+                            <Title order={2}>{stats.total_average_time}</Title>
+                        </Stack>
+                    </Paper>
+                </Grid.Col>
+            </Grid>
 
-            <Stack mb={80}>
-                <div className="Employee" style={{width: '100%', height: '500px'}}>
-                    <h2>Promedios total por servicio</h2>
-                    <Doughnut data= {porcentage} options={graphicConfig}/>
-                </div>
-            </Stack>  
+            <Title order={3}>Unidades por servicio</Title>
+            <ResponsiveContainer height={300} width="100%">
+                <BarChart data={unitsData}>
+                    <XAxis dataKey="name"/>
+                    <YAxis/>
+                    <Tooltip/>
+                    <Bar name="Unidades" dataKey="units" fill="#2980b9"/>
+                </BarChart>
+            </ResponsiveContainer>
+
+            <Title order={3}>Tiempo promedio por servicio</Title>
+            <ResponsiveContainer height={300} width="100%">
+                <BarChart data={timeData}>
+                    <XAxis dataKey="name"/>
+                    <YAxis/>
+                    <Tooltip/>
+                    <Bar name="Tiempo promedio" dataKey="average_time" fill="#F5B041"/>
+                </BarChart>
+            </ResponsiveContainer>
+
+            <Title order={3}>Porcentaje de unidades por servicio</Title>
+            <ResponsiveContainer height={300} width="100%">
+                <PieChart>
+                    <Tooltip/>
+                    <Pie data={percentageData} dataKey="percentage" nameKey="name" cx="50%" cy="50%" outerRadius={150} fill="#2980b9"/>
+                </PieChart>
+            </ResponsiveContainer>
 
             <Grid>
                 <Grid.Col span={6} align="center">
@@ -164,21 +202,10 @@ export async function getServerSideProps(ctx){
             }
         }
 
-    const response =  await axios.get(`${process.env.BASE_URL}/api/employees/${ctx.query.id}`);
-    const employee = response.data.employee;
-
-    if(!employee)
-        return {
-            redirect: {
-                destination: "/employees",
-                permanent: false
-            }
-        }
-
     return {
         props: {
             user: session ? session.user : null,
-            employee: employee
+            id: ctx.query.id
         }
     }
 }
