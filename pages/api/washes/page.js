@@ -4,7 +4,7 @@ export default async (req, res) => {
     if(req.method === 'GET'){
         const offset = (Number(req.query.page) - 1) * 5;
         const connection = await mysql.createConnection(process.env.DATABASE_URL);
-        const [rows, fields] = await connection.query('SELECT * FROM washes LIMIT 5 OFFSET ?', [offset]);
+        const [rows, fields] = await connection.query('SELECT * FROM washes ORDER BY date DESC LIMIT 5 OFFSET ?', [offset]);
 
         const washes = rows.map(wash => {
 

@@ -21,6 +21,7 @@ export default ({setTitle, employees, total_washes}) => {
     useEffect(() => {
         setTitle('Lavados');
 
+        setLoader(true);
         const getWashes = async () => {
             const washesResponse = await axios.get('/api/washes/page', {params: {page: page}});
             setWashes(washesResponse.data.washes);
@@ -48,8 +49,8 @@ export default ({setTitle, employees, total_washes}) => {
                     <>
                         <Stack pt="lg" pb={70}>
                             {washes.map(wash => <Wash key={wash.id} wash={wash} employee={employees.find(employee => employee.id === wash.employee_id)} removeWash={removeWash}/>)}
+                            <Pagination total={Math.ceil(total_washes / 5)} page={page} onChange={setPage} position="center"/>
                         </Stack>
-                        <Pagination total={Math.ceil(total_washes / 5)} page={page} onChange={setPage} position="center"/>
                     </>
                     :
                     <Center style={{height: "80vh"}}>
