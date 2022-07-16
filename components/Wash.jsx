@@ -57,17 +57,13 @@ export default function Wash({wash, employee, removeWash}){
                                 <Badge size="lg" color="yellow" variant="outline">{wash.service}</Badge>
                             </Grid.Col>
                             <Grid.Col span={4} align="center">
-                                <Group noWrap>
-                                    {brands.find(brand => brand.name === wash.brand).logo}{wash.brand} 
-                                </Group>
+                                {brands.find(brand => brand.name === wash.brand).logo}
                             </Grid.Col>
                             <Grid.Col span={6}>
                                 <Badge size="lg" color="blue" variant="outline">{`${wash.time} min`}</Badge>
                             </Grid.Col>
                             <Grid.Col span={4} align="center">
-                                <Group noWrap>
-                                    {wash.model} {wash.colour} 
-                                </Group>
+                                {wash.model} {wash.colour} 
                             </Grid.Col>
                         </Grid>
                     </Card>
