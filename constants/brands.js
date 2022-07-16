@@ -1878,6 +1878,7 @@ const brands = [
             'JUKE',
             'KICKS',
             'LEAF',
+            'MARCH',
             'MAXIMA',
             'MAXIMA QX',
             'MICRA',

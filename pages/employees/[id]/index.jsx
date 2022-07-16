@@ -10,6 +10,7 @@ import { Title } from '@mantine/core';
 import { Button } from '@mantine/core';
 import { Loader } from '@mantine/core';
 import { Paper } from '@mantine/core';
+import { Pagination } from "@mantine/core";
 
 import { ResponsiveContainer } from "recharts";
 import { BarChart } from "recharts";
@@ -25,7 +26,10 @@ import { MdEdit } from 'react-icons/md';
 
 import { getEmployee } from "../../../utils/api";
 import { getEmployeeStats } from "../../../utils/api";
+import { getEmployeePage } from "../../../utils/api";
 const axios =  require('axios').default;
+
+import Wash from "../../../components/Wash";
 
 export default function Employee({id, setTitle}){
     const router = useRouter();
@@ -35,8 +39,11 @@ export default function Employee({id, setTitle}){
     const [unitsData, setUnitsData] = useState(null);
     const [timeData, setTimeData] = useState(null);
     const [percentageData, setPercentageData] = useState(null);
+    const [page, setPage] = useState(1);
+    const [washes, setWashes] = useState(null);
     const [loadEdit, setLoadEdit] = useState(false);
     const [loadDelete, setLoadDelete] = useState(false);
+    const [loadPage, setLoadPage] = useState(false);
     const [disabled, setDisabled] = useState(false);
 
     useEffect(() => {
@@ -95,6 +102,14 @@ export default function Employee({id, setTitle}){
             ]);
         });
     }, []);
+
+    useEffect(() => {
+        setLoadPage(true);
+        getEmployeePage(id, page).then(washes => {
+            setWashes(washes)
+            setLoadPage(false);
+        });
+    }, [page]);
 
     const handleEdit = (e) => {
         setDisabled(true);
@@ -176,6 +191,16 @@ export default function Employee({id, setTitle}){
                     <Pie data={percentageData} dataKey="percentage" nameKey="name" cx="50%" cy="50%" outerRadius={150} fill="#2980b9"/>
                 </PieChart>
             </ResponsiveContainer>
+
+            <Title order={3}>Lavados terminados</Title>
+            {
+                loadPage?
+                <Center>
+                    <Loader variant="dots" size="xl" color="yellow"/>:
+                </Center>:
+                washes?.map(wash => <Wash key={wash.id} wash={wash} employee={employee} removeWash={() => console.log("Delete pressed...")}/>)
+            }
+            <Pagination total={Math.ceil(stats?.total_units / 5)} page={page} onChange={setPage} position="center"/>
 
             <Grid>
                 <Grid.Col span={6} align="center">

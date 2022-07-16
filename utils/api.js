@@ -16,6 +16,12 @@ const getEmployeeStats = async (id) => {
     return response.data.stats;
 }
 
+const getEmployeePage = async (id, page) => {
+    const response =  await axios.get(`/api/employees/${id}/page`, {params: {page: page}});
+    return response.data.washes;
+}
+
 module.exports.getEmployees = getEmployees;
 module.exports.getEmployee = getEmployee;
 module.exports.getEmployeeStats = getEmployeeStats;
+module.exports.getEmployeePage = getEmployeePage

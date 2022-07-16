@@ -56,7 +56,7 @@ export default function OngoingWash({wash, removeWash}){
 
     return(
         <Collapse in={collapse} onTransitionEnd={() => removeWash(wash.date)} transitionDuration={600}>
-            <Transition mounted={mounted} transition="slide-right" duration={Math.random() * 500 + 300} timingFunction="ease" onExit={() => setCollapse(false)}>
+            <Transition mounted={mounted} transition="pop" duration={Math.random() * 500 + 300} timingFunction="ease" onExit={() => setCollapse(false)}>
                 {
                     (styles) => 
                         <Card style={styles}>
