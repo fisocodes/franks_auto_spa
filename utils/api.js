@@ -21,7 +21,13 @@ const getEmployeePage = async (id, page) => {
     return response.data.washes;
 }
 
+const deleteWash = async (wash) => {
+    const response = await axios.delete('/api/washes/delete', {data: {wash: wash}});
+    return response.data;
+}
+
 module.exports.getEmployees = getEmployees;
 module.exports.getEmployee = getEmployee;
 module.exports.getEmployeeStats = getEmployeeStats;
 module.exports.getEmployeePage = getEmployeePage
+module.exports.deleteWash = deleteWash;

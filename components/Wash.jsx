@@ -7,7 +7,6 @@ import { Text } from "@mantine/core";
 import { ActionIcon } from "@mantine/core";
 import { Badge } from '@mantine/core';
 import { Grid } from "@mantine/core";
-import { Group } from '@mantine/core';
 import { Transition } from '@mantine/core';
 import { Collapse } from "@mantine/core";
 
@@ -15,7 +14,7 @@ import { MdDelete } from 'react-icons/md';
 
 import { brands } from "../constants/brands";
 
-const axios =  require('axios').default;
+import { deleteWash } from "../utils/api";
 
 export default function Wash({wash, employee, removeWash}){
 
@@ -25,10 +24,11 @@ export default function Wash({wash, employee, removeWash}){
 
     const handleDelete = async () => {
         setLoadDelete(true);
-        const deleteResponse = await axios.delete('api/washes/delete', {data: {wash: wash}});
-        setMounted(false);
-        removeWash(wash.date);
-        console.log(deleteResponse.data);
+        deleteWash(wash).then(data => {
+            setMounted(false);
+            removeWash(wash.date);
+            console.log(data);
+        });
     }
 
     useEffect(() => {

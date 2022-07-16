@@ -118,6 +118,10 @@ export default function Employee({id, setTitle}){
         router.push(`/employees/${employee.id}/edit`);
     }
 
+    const removeWash = (date) => {
+        setWashes(washes.filter(wash => date !== wash.date));
+    }
+
     const handleDelete = async (e) => {
         setDisabled(true);
         setLoadDelete(true);
@@ -198,7 +202,7 @@ export default function Employee({id, setTitle}){
                 <Center>
                     <Loader variant="dots" size="xl" color="yellow"/>:
                 </Center>:
-                washes?.map(wash => <Wash key={wash.id} wash={wash} employee={employee} removeWash={() => console.log("Delete pressed...")}/>)
+                washes?.map(wash => <Wash key={wash.id} wash={wash} employee={employee} removeWash={() => removeWash}/>)
             }
             <Pagination total={Math.ceil(stats?.total_units / 5)} page={page} onChange={setPage} position="center"/>
 
